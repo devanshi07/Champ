@@ -9,7 +9,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { PrimaryNavigator } from "./primary-navigator"
-
+import SplashScreen from "react-native-splash-screen"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -51,6 +51,10 @@ export const RootNavigator = React.forwardRef<
   NavigationContainerRef,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
+  // Hide splash screen and show screen
+  React.useEffect(() => {
+  SplashScreen.hide()
+  }, []);
   return (
     <NavigationContainer {...props} ref={ref}>
       <RootStack />

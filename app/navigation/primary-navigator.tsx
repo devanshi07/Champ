@@ -40,7 +40,7 @@ export function PrimaryNavigator() {
         gestureEnabled: true,
       }}
     >
-      <Stack.Screen name="splash" component={SplashScreen}/>
+      {/* <Stack.Screen name="splash" component={SplashScreen}/> */}
       <Stack.Screen name="login" component={LoginScreen}/>
       <Stack.Screen name="dashboard" component={DashboardScreen}/>
       {/* <Stack.Screen name="welcome" component={WelcomeScreen} />
