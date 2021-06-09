@@ -12,6 +12,8 @@ target 'IgniteApp' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-google-signin/google-signin'
+
   target 'IgniteAppTests' do
     inherit! :complete
     # Pods for testing

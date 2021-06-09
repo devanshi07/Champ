@@ -14,7 +14,6 @@ export const loginScreenStyles = {
         width: scale(221.7),
         height: verticalScale(131),
         marginTop: verticalScale(30),
-        marginHorizontal: scale(20.7)
     } as ImageStyle,
     
     TEXTSTYLE: {
@@ -27,21 +26,18 @@ export const loginScreenStyles = {
     SIGNINBTN: {
         height: verticalScale(53.3),
         justifyContent: "center",
-        marginHorizontal: scale(33.3),
         backgroundColor: '#eece00',
         marginTop: verticalScale(33.3),
+        marginBottom:verticalScale(160.7)
     } as ViewStyle,
     FACEBOOKBTN: {
         height: verticalScale(53.3),
         justifyContent: "center",
-        marginHorizontal: scale(33.3),
         backgroundColor: '#4267b2',
-        marginTop: verticalScale(160.7),
     } as ViewStyle,
     GMAILBTN: {
         height: verticalScale(53.3),
         justifyContent: "center",
-        marginHorizontal: scale(33.3),
         backgroundColor: '#b23121',
         marginTop: verticalScale(10),
         marginBottom: verticalScale(50.7)
@@ -50,10 +46,8 @@ export const loginScreenStyles = {
     //style for email and password view
     EMAILVIEW: {
         marginTop: verticalScale(46.3),
-        marginHorizontal: scale(33.3),
     } as ViewStyle,
     PASSWORDVIEW: {
-        marginHorizontal: scale(33.3),
         marginTop: verticalScale(32.7)
     } as ViewStyle,
     TEXTINPUTSTYLE: {
@@ -82,12 +76,12 @@ export const loginScreenStyles = {
     //style for error msg
     ERRORMSGVIEW: {
         marginTop: verticalScale(9.7),
-        marginHorizontal: scale(10)
     } as ViewStyle,
     ERRORMSGTEXT: {
         fontSize: moderateVerticalScale(12),
         color: "#c53838",
-        fontFamily: typography.regular
+        fontFamily: typography.regular,
+        lineHeight:verticalScale(18.7)
     } as TextStyle,
 
 }
