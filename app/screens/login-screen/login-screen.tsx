@@ -1,78 +1,12 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { View,TextInput, TouchableOpacity} from "react-native"
+import { View, TextInput, TouchableOpacity, StatusBar } from "react-native"
 import { Icon, Screen, Text, Wallpaper } from "../../components"
 import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color } from "../../theme"
-import {loginScreenStyles} from './login-screen-styles'
-// const ROOT: ViewStyle = {
-//   backgroundColor: color.palette.black,
-//   flex: 1,
-// }
-// const LOGO: ImageStyle = {
-//   width: scale(221.7),
-//   height: verticalScale(131),
-//   marginTop: verticalScale(30),
-//   marginHorizontal: scale(20.7)
-// }
-// const BUTTON: ViewStyle = {
-//   height: verticalScale(53.3),
-//   justifyContent: "center",
-//   marginHorizontal: scale(33.3)
-// }
-// const TEXTSTYLE: TextStyle = {
-//   fontSize: moderateVerticalScale(12),
-//   color: color.palette.textColor
-// }
-// const SIGNINBTN: ViewStyle = {
-//   ...BUTTON,
-//   backgroundColor: '#eece00',
-//   marginTop: verticalScale(33.3),
-// }
-// const FACEBOOKBTN: ViewStyle = {
-//   ...BUTTON,
-//   backgroundColor: '#4267b2',
-//   marginTop: verticalScale(160.7),
-// }
-// const GMAILBTN: ViewStyle = {
-//   ...BUTTON,
-//   backgroundColor: '#b23121',
-//   marginTop: verticalScale(10),
-//   marginBottom: verticalScale(50.7)
-// }
-// const EMAILVIEW: ViewStyle = {
-//   marginTop: verticalScale(46.3),
-//   marginHorizontal: scale(33.3),
-// }
-// const PASSWORDVIEW: ViewStyle = {
-//   ...EMAILVIEW,
-//   marginTop: verticalScale(32.7)
-// }
-// const TEXTINPUTSTYLE: TextStyle = {
-//   borderBottomColor: color.palette.white,
-//   borderBottomWidth: 0.7,
-//   fontSize: moderateVerticalScale(16),
-//   color: color.palette.white
-// }
-// const BTNTEXTSTYLE: TextStyle = {
-//   fontSize: moderateVerticalScale(15.3),
-//   color: color.palette.textColor,
-//   alignSelf: "center"
-// }
-// const SIGNINTEXT: TextStyle = {
-//   ...BTNTEXTSTYLE,
-//   letterSpacing: 3.07,
-//   color: color.palette.black,
-// }
-// const ERRORMSGVIEW: ViewStyle={
-//   marginTop: verticalScale(9.7), 
-//   marginHorizontal: scale(10) 
-// }
-// const ERRORMSGTEXT: TextStyle={
-//   fontSize: moderateVerticalScale(12), 
-//   color: "#c53838" 
-// }
+import { loginScreenStyles } from './login-screen-styles'
+import {LoginManager,LoginButton,AccessToken} from "react-native-fbsdk"
 
 export const LoginScreen = observer(function LoginScreen() {
   // Pull in one of our MST stores
@@ -111,41 +45,66 @@ export const LoginScreen = observer(function LoginScreen() {
       setPassword("");
     }
   }
+  function checkEmail(text) {
+    if (text == "") {
+      setEmailError(true)
+    }
+    else {
+      setEmailError(false)
+      setEmail(text)
+    }
+  }
 
+  function checkPassword(text) {
+    if (text == "") {
+      setPasswordError(true)
+    }
+    else {
+      setPasswordError(false)
+      setPassword(text)
+    }
+  }
+
+  function checkFacebbokLogin(){
+    LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log("==> Login cancelled");
+        } else {
+          console.log(
+            "==> Login success with permissions: " +
+              result.grantedPermissions.toString()
+          );
+        }
+       },
+       function(error) {
+        console.log("==> Login fail with error: " + error);
+       }
+     );
+  }
   return (
     <Screen style={loginScreenStyles.ROOT} preset="scroll">
-      <Wallpaper/>
+
+      <StatusBar backgroundColor="black" />
+      <Wallpaper />
+
       <Icon icon={"loginScreenLogo"} style={loginScreenStyles.LOGO} />
+
       <View style={loginScreenStyles.EMAILVIEW}>
         <Text tx="loginScreen.emailAddress" style={loginScreenStyles.TEXTSTYLE} />
         <TextInput placeholder="Enter Email"
-          onChangeText={text => {
-            if (text == "") {
-              setEmailError(true)
-            }
-            else {
-              setEmailError(false)
-              setEmail(text)
-            }
-          }}
+          onChangeText={text => checkEmail(text)}
           placeholderTextColor={color.palette.white}
           style={loginScreenStyles.TEXTINPUTSTYLE} />
         {emailError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
           <Text tx="loginScreen.emailErrorMsg" style={loginScreenStyles.ERRORMSGTEXT} />
         </View> : <></>}
       </View>
+
       <View style={loginScreenStyles.PASSWORDVIEW}>
         <Text tx="loginScreen.password" style={loginScreenStyles.TEXTSTYLE} />
         <TextInput placeholder="Enter Password"
-          onChangeText={text => {
-            if (text == "") {
-              setPasswordError(true)
-            }
-            else {
-              setPasswordError(false)
-              setPassword(text)
-            }
-          }}
+          onChangeText={text => checkPassword(text)}
           secureTextEntry={true}
           placeholderTextColor={color.palette.white}
           style={loginScreenStyles.TEXTINPUTSTYLE} />
@@ -155,13 +114,30 @@ export const LoginScreen = observer(function LoginScreen() {
           <Text tx="loginScreen.passwordErrorSpecialChar" style={loginScreenStyles.ERRORMSGTEXT} />
         </View> : <></>}
       </View>
-
+       {/* <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString())
+                  }
+                )
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")}/>   */}
       <TouchableOpacity onPress={() => checkValidation()}
         style={loginScreenStyles.SIGNINBTN}>
         <Text tx="loginScreen.signIn" style={loginScreenStyles.SIGNINTEXT} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={loginScreenStyles.FACEBOOKBTN}>
+      <TouchableOpacity onPress={()  => checkFacebbokLogin()}
+      style={loginScreenStyles.FACEBOOKBTN}>
         <Text tx="loginScreen.facebook" style={loginScreenStyles.BTNTEXTSTYLE} />
       </TouchableOpacity>
 

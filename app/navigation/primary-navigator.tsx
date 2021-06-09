@@ -7,6 +7,9 @@
 import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createDrawerNavigator } from "@react-navigation/drawer"
+
 import { WelcomeScreen, DemoScreen,SplashScreen , LoginScreen,DashboardScreen} from "../screens"
 
 /**
@@ -31,6 +34,8 @@ export type PrimaryParamList = {
 
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
 const Stack = createNativeStackNavigator<PrimaryParamList>()
+// const Drawer = createDrawerNavigator<PrimaryParamList>()
+// const Tab = createBottomTabNavigator<PrimaryParamList>()
 
 export function PrimaryNavigator() {
   return (

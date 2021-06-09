@@ -1,5 +1,5 @@
 import { ImageStyle, ViewStyle, TextStyle } from 'react-native';
-import { color } from '../../theme';
+import { color,typography } from '../../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../../utils/scale';
 
 export const loginScreenStyles = {
@@ -19,7 +19,8 @@ export const loginScreenStyles = {
     
     TEXTSTYLE: {
         fontSize: moderateVerticalScale(12),
-        color: color.palette.textColor
+        color: color.palette.textColor,
+        fontFamily: typography.light
     } as TextStyle,
 
     //styles for buttons
@@ -59,20 +60,23 @@ export const loginScreenStyles = {
         borderBottomColor: color.palette.white,
         borderBottomWidth: 0.7,
         fontSize: moderateVerticalScale(16),
-        color: color.palette.white
+        color: color.palette.white,
+        fontFamily:typography.light
     } as TextStyle,
 
     //style for button text
     BTNTEXTSTYLE: {
         fontSize: moderateVerticalScale(15.3),
         color: color.palette.textColor,
-        alignSelf: "center"
+        alignSelf: "center",
+        fontFamily: typography.regular
     } as TextStyle,
     SIGNINTEXT: {
         fontSize: moderateVerticalScale(15.3),
         alignSelf: "center",
         letterSpacing: 3.07,
         color: color.palette.black,
+        fontFamily:typography.regular
     } as TextStyle,
 
     //style for error msg
@@ -82,7 +86,8 @@ export const loginScreenStyles = {
     } as ViewStyle,
     ERRORMSGTEXT: {
         fontSize: moderateVerticalScale(12),
-        color: "#c53838"
+        color: "#c53838",
+        fontFamily: typography.regular
     } as TextStyle,
 
 }

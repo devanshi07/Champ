@@ -14,6 +14,13 @@ public class MainActivity extends ReactActivity {
         SplashScreen.show(this);  // here
         super.onCreate(savedInstanceState);
     }
+    
+// @Override
+// public void onCreate() {
+//     super.onCreate();
+//     FacebookSdk.sdkInitialize(getApplicationContext());
+//     AppEventsLogger.activateApp(this);
+// }
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new ReactActivityDelegate(this, getMainComponentName()) {
