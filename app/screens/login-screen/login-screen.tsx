@@ -26,7 +26,7 @@ export const LoginScreen = observer(function LoginScreen() {
   React.useEffect(() => {
     GoogleSignin.configure({
       // webClientId: '587311044042-dq251cmu9u3jl67t915dd97svdbcd1ar.apps.googleusercontent.com',
-      webClientId: "587311044042-leujttbmp91um76310092k0i7n8lg8hd.apps.googleusercontent.com",
+      webClientId: "102124790001-68m37k6gnjus7jr3anee0jed5ojgthe0.apps.googleusercontent.com",
       offlineAccess: false,
 
     });
@@ -37,7 +37,7 @@ export const LoginScreen = observer(function LoginScreen() {
 
   const signIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
+      //await GoogleSignin.hasPlayServices();
       console.log("enter in gmail")
       const userInfo = await GoogleSignin.signIn();
       console.log("success.... ", userInfo)

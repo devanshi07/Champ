@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "102124790001",
+    "project_id": "champ-dc6bc",
+    "storage_bucket": "champ-dc6bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102124790001:android:8d9f50ec91734aed418950",
+        "android_client_info": {
+          "package_name": "com.igniteapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102124790001-f9h5n8o4644vrn12n2hs32armdd0tfqq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.igniteapp",
+            "certificate_hash": "de07b406618900f8d8e3f655fdc28a69e1e6ac6e"
+          }
+        },
+        {
+          "client_id": "102124790001-68m37k6gnjus7jr3anee0jed5ojgthe0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGU7tYzbdxhqTWItOd7Aodnb9XSzJwFGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102124790001-68m37k6gnjus7jr3anee0jed5ojgthe0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

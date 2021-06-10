@@ -169,7 +169,9 @@ android {
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
             def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
+            //def abi = output.getFilter(OutputFile.ABI)
+            def abi = output.getFilter(com.android.build.OutputFile.ABI)
+
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
@@ -184,13 +186,15 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
-
+    
+    implementation project(":react-native-google-signin_google-signin")
+    
     implementation project(':react-native-fbsdk')
     implementation "androidx.multidex:multidex:2.0.1"
 
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation project(path: ':@react-native-community_async-storage')
-    compile project(':react-native-splash-screen')
+    implementation project(':react-native-splash-screen')
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

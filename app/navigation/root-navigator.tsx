@@ -52,9 +52,8 @@ export const RootNavigator = React.forwardRef<
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   // Hide splash screen and show screen
-  React.useEffect(() => {
-  SplashScreen.hide()
-  }, []);
+  
+  
   return (
     <NavigationContainer {...props} ref={ref}>
       <RootStack />

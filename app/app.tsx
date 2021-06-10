@@ -28,6 +28,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from 'react-native-screens'
+import SplashScreen from "react-native-splash-screen"
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -50,6 +51,11 @@ function App() {
   useEffect(() => {
     (async () => {
       setupRootStore().then(setRootStore)
+      
+      console.log("early  screen ..")
+        SplashScreen.hide()
+      console.log("splash screen ..")
+      
     })()
   }, [])
 
