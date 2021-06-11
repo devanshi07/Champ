@@ -51,11 +51,7 @@ function App() {
   useEffect(() => {
     (async () => {
       setupRootStore().then(setRootStore)
-      
-      console.log("early  screen ..")
-        SplashScreen.hide()
-      console.log("splash screen ..")
-      
+      SplashScreen.hide()
     })()
   }, [])
 

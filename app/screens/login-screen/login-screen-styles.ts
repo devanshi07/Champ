@@ -3,42 +3,27 @@ import { color,typography } from '../../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../../utils/scale';
 
 export const loginScreenStyles = {
-    //main container
+    //all style for views
     ROOT: {
         flex: 1,
-        backgroundColor: color.palette.black
     } as ViewStyle,
-
-    //style for logo
-    LOGO: {
-        width: scale(66.7),
-        height: verticalScale(66.7),
-        marginTop: verticalScale(50.7),
-    } as ImageStyle,
-    WELCOMETEXT: {
-        fontSize: moderateVerticalScale(30), 
-        marginTop: 18.7,
-        fontFamily: typography.semiBold
-    } as TextStyle,
-    SIGNINWELCOMETEXT: {
-        fontSize: moderateVerticalScale(16.7),
-        fontFamily: typography.regular
-    } as TextStyle,
-
-
-    TEXTSTYLE: {
-        fontSize: moderateVerticalScale(12),
-        color: color.palette.textColor,
-        fontFamily: typography.light
-    } as TextStyle,
-
-    //styles for buttons
+    MAINCONTAINER: {
+        flex:1,
+        marginHorizontal: scale(33.3)
+    }as ViewStyle,
+    BOTTOMVIEW: {
+        marginBottom:verticalScale(50.7),
+        justifyContent:"flex-end"
+    }as ViewStyle,
+    ERRORMSGVIEW: {
+        marginTop: verticalScale(9.7),
+    } as ViewStyle,
     SIGNINBTN: {
         height: verticalScale(53.3),
         justifyContent: "center",
         backgroundColor: '#eece00',
         marginTop: verticalScale(33.3),
-        //marginBottom:verticalScale(160.7)
+        marginBottom:verticalScale(160.7)
     } as ViewStyle,
     FACEBOOKBTN: {
         height: verticalScale(53.3),
@@ -50,16 +35,34 @@ export const loginScreenStyles = {
         justifyContent: "center",
         backgroundColor: '#b23121',
         marginTop: verticalScale(10),
-        marginBottom: verticalScale(50.7)
     } as ViewStyle,
-
-    //style for email and password view
     EMAILVIEW: {
         marginTop: verticalScale(46.3),
     } as ViewStyle,
     PASSWORDVIEW: {
         marginTop: verticalScale(32.7)
     } as ViewStyle,
+    //style for logo
+    LOGO: {
+        width: scale(66.7),
+        height: verticalScale(66.7),
+        marginTop: verticalScale(50.7),
+    } as ImageStyle,
+    //style for all text
+    WELCOMETEXT: {
+        fontSize: moderateVerticalScale(30), 
+        marginTop: 18.7,
+        fontFamily: typography.semiBold
+    } as TextStyle,
+    SIGNINWELCOMETEXT: {
+        fontSize: moderateVerticalScale(16.7),
+        fontFamily: typography.regular
+    } as TextStyle,
+    TEXTSTYLE: {
+        fontSize: moderateVerticalScale(12),
+        color: color.palette.textColor,
+        fontFamily: typography.light
+    } as TextStyle,
     TEXTINPUTSTYLE: {
         borderBottomColor: color.palette.white,
         borderBottomWidth: 0.7,
@@ -68,8 +71,6 @@ export const loginScreenStyles = {
         fontFamily:typography.light,
         paddingLeft:0
     } as TextStyle,
-
-    //style for button text
     BTNTEXTSTYLE: {
         fontSize: moderateVerticalScale(15.3),
         color: color.palette.textColor,
@@ -83,11 +84,6 @@ export const loginScreenStyles = {
         color: color.palette.black,
         fontFamily:typography.regular
     } as TextStyle,
-
-    //style for error msg
-    ERRORMSGVIEW: {
-        marginTop: verticalScale(9.7),
-    } as ViewStyle,
     ERRORMSGTEXT: {
         fontSize: moderateVerticalScale(12),
         color: "#c53838",

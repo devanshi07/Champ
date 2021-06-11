@@ -6,6 +6,8 @@ export const icons = {
   homeIcon: require("./homeicon.png"),
   userIcon: require("./usericon.png"),
   loginScreenLogo: require("./l1.png"),
+  leftIcon: require("./header_left_icon.png"),
+  rightIcon: require("./header_right_icon.png"),
 
 }
 

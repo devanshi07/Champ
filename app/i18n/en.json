@@ -29,7 +29,10 @@
     "passwordErrorSpecialChar": "! atleast one special character",
     "signIn": "SIGN IN",
     "facebook": "Login with Facebook",
-    "gmail": "Login with Gmail"
+    "gmail": "Login with Gmail",
+    "signintext" : "Sign in to continue",
+    "welcometext" : "Welcome Back,"
+
   },
   "storybook": {
     "placeholder": "Placeholder",

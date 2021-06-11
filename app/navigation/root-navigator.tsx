@@ -9,7 +9,9 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { PrimaryNavigator } from "./primary-navigator"
-import SplashScreen from "react-native-splash-screen"
+import { LoginScreen } from "../screens"
+import { useStores } from "../models"
+import { observer } from "mobx-react-lite"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -22,11 +24,31 @@ import SplashScreen from "react-native-splash-screen"
  */
 export type RootParamList = {
   primaryStack: undefined
+  login: undefined
+  authStack : undefined
 }
 
 const Stack = createNativeStackNavigator<RootParamList>()
-
-const RootStack = () => {
+const authStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+      }}
+    >
+      <Stack.Screen
+        name="login"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+const RootStack = observer(() => {
+  const { authStore } = useStores();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -36,24 +58,27 @@ const RootStack = () => {
         stackPresentation: "modal",
       }}
     >
-      <Stack.Screen
+      {authStore.isLogin ? <Stack.Screen
         name="primaryStack"
         component={PrimaryNavigator}
         options={{
           headerShown: false,
         }}
-      />
+      /> : <Stack.Screen
+        name="authStack"
+        component={authStack}
+        options={{
+          headerShown: false,
+        }}
+      />}
     </Stack.Navigator>
   )
-}
+})
 
 export const RootNavigator = React.forwardRef<
   NavigationContainerRef,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
-  // Hide splash screen and show screen
-  
-  
   return (
     <NavigationContainer {...props} ref={ref}>
       <RootStack />

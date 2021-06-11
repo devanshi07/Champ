@@ -10,6 +10,7 @@ declare let module
 const VIEWSTYLE = {
   flex: 1,
   backgroundColor: color.storybookDarkBg,
+  
 }
 
 storiesOf("Header", module)
@@ -25,7 +26,7 @@ storiesOf("Header", module)
         <View style={VIEWSTYLE}>
           <Header
             headerTx="demoScreen.howTo"
-            leftIcon="back"
+            leftIcon="leftIcon"
             onLeftPress={() => Alert.alert("left nav")}
           />
         </View>
@@ -34,7 +35,7 @@ storiesOf("Header", module)
         <View style={VIEWSTYLE}>
           <Header
             headerTx="demoScreen.howTo"
-            rightIcon="bullet"
+            rightIcon="rightIcon"
             onRightPress={() => Alert.alert("right nav")}
           />
         </View>
