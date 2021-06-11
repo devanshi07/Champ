@@ -5,7 +5,8 @@ export const icons = {
   appLogo: require("./logo.png"),
   homeIcon: require("./homeicon.png"),
   userIcon: require("./usericon.png"),
-  loginScreenLogo: require("./logo2.png"),
+  loginScreenLogo: require("./l1.png"),
+
 }
 
 export type IconTypes = keyof typeof icons

@@ -11,11 +11,21 @@ export const loginScreenStyles = {
 
     //style for logo
     LOGO: {
-        width: scale(221.7),
-        height: verticalScale(131),
-        marginTop: verticalScale(30),
+        width: scale(66.7),
+        height: verticalScale(66.7),
+        marginTop: verticalScale(50.7),
     } as ImageStyle,
-    
+    WELCOMETEXT: {
+        fontSize: moderateVerticalScale(30), 
+        marginTop: 18.7,
+        fontFamily: typography.semiBold
+    } as TextStyle,
+    SIGNINWELCOMETEXT: {
+        fontSize: moderateVerticalScale(16.7),
+        fontFamily: typography.regular
+    } as TextStyle,
+
+
     TEXTSTYLE: {
         fontSize: moderateVerticalScale(12),
         color: color.palette.textColor,
@@ -28,7 +38,7 @@ export const loginScreenStyles = {
         justifyContent: "center",
         backgroundColor: '#eece00',
         marginTop: verticalScale(33.3),
-        marginBottom:verticalScale(160.7)
+        //marginBottom:verticalScale(160.7)
     } as ViewStyle,
     FACEBOOKBTN: {
         height: verticalScale(53.3),
@@ -55,7 +65,8 @@ export const loginScreenStyles = {
         borderBottomWidth: 0.7,
         fontSize: moderateVerticalScale(16),
         color: color.palette.white,
-        fontFamily:typography.light
+        fontFamily:typography.light,
+        paddingLeft:0
     } as TextStyle,
 
     //style for button text
