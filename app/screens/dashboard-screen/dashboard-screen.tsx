@@ -25,7 +25,7 @@ export const DashboardScreen = observer(function DashboardScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
       <Wallpaper />
-      <Header headerText="Dashboard" leftIcon="leftIcon" rightIcon="rightIcon" />
+      <Header headerText="Dashboard"  rightIcon="rightIcon" />
 
       <View style={dashboardScreenStyles.MAINVIEW}>
         <TouchableOpacity
