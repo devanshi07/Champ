@@ -16,7 +16,7 @@ import { View, Text,TouchableOpacity } from "react-native"
 import { Icon } from "../components"
 import { typography } from "../theme"
 
-import { useStores } from "../models"
+import { UserDetailsModel, useStores } from "../models"
 
 // import {
 //   Avatar,
@@ -52,7 +52,6 @@ const Drawers = createDrawerNavigator<PrimaryParamList>()
 const Tab = createBottomTabNavigator<PrimaryParamList>()
 
 export function PrimaryNavigator() {
-  //const { authStore} = useStores()
 
   return (
     <Stack.Navigator
@@ -117,8 +116,9 @@ function DrawerContent({ navigation, props }) {
               color: '#fefefe',
               letterSpacing: 2.4
             }}>by Tatvasoft</Text>
+            <Text style={{color:"white"}}>{authStore.userDetails.userName}</Text>
           </View>
-
+            
           <DrawerItem label="BottomStack" labelStyle={{ color: "#fefefe", fontSize: 20 }}
             onPress={() => { navigation.navigate("bottomstack") }} />
         </View>
@@ -126,7 +126,7 @@ function DrawerContent({ navigation, props }) {
 
       <TouchableOpacity style={{ flex: 0.1,marginBottom:49.7,padding:0 }}
       onPress={() =>  {authStore.updateLoginStatus(false);
-      authStore.updateUserDetails("","")}}>
+      authStore.updateUserDetails("")}}>
         <Text style={{ color: "white",fontFamily:typography.regular,fontSize:20,lineHeight:50 }}>LOG OUT</Text>
       </TouchableOpacity>
     </View>

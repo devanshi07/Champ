@@ -52,6 +52,7 @@ function App() {
     (async () => {
       setupRootStore().then(setRootStore)
       SplashScreen.hide()
+      console.log("enter appp")
     })()
   }, [])
 

@@ -3,7 +3,7 @@ const { height, width } = Dimensions.get('window');
 //Screen Constatnts
 //375 and 812 are constants, check from Zeplin 
 const guidelineBaseWidth = 375;
-const guidelineBaseHeight = Platform.OS === 'ios' ? 812 : height <= 550 ? 667 : height;
+const guidelineBaseHeight = Platform.OS === 'ios' ? 812 : height <= 550 ? 667 : 812;
 /**
  * Function to scale a value based on the size of the screen size and the original
  * size used on the design.

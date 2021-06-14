@@ -38,7 +38,14 @@ export const LoginScreen = observer(function LoginScreen() {
       console.log("success.... ", userInfo)
       setUser(userInfo.user.email);
       console.log("user info ....",userInfo.user.email)
-      authStore.updateUserDetails(userInfo.user.email,userInfo.user.name);
+      let user_Info = {
+        name : userInfo.user.name,
+        email: userInfo.user.email,
+        dateOfBirth: "",
+        url:userInfo.user.photo
+      }
+      authStore.updateUserDetails(user_Info)
+      //authStore.updateUserDetails(userInfo.user.email,userInfo.user.name);
       authStore.updateLoginStatus(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -69,6 +76,13 @@ export const LoginScreen = observer(function LoginScreen() {
       setPasswordError(true);
     }
     else {
+      let userInfo = {
+        name : "",
+        email: email,
+        dateOfBirth: "",
+        url:""
+      }
+      authStore.updateUserDetails(userInfo)
       authStore.updateLoginStatus(true);//set login value true
       setEmail("");
       setPassword("");
@@ -98,7 +112,7 @@ export const LoginScreen = observer(function LoginScreen() {
   const getInfoFromToken = token => {
     const PROFILE_REQUEST_PARAMS = {
       fields: {
-        string: 'id,name,first_name,last_name,email',
+        string: 'id,name,first_name,last_name,birthday,email,gender',
       },
     };
     const profileRequest = new GraphRequest(
@@ -109,7 +123,14 @@ export const LoginScreen = observer(function LoginScreen() {
           console.log('login info has error: ' + error);
         } else {
           setFbUser({ userInfo: user.email });
-          authStore.updateUserDetails(user.email,user.name)
+          let user_Info = {
+            name : user.name,
+            email: user.email,
+            dateOfBirth: "",
+            url: ""
+          }
+          authStore.updateUserDetails(user_Info)
+          //authStore.updateUserDetails(user.email,user.name)
           console.log('result:', user);
         }
       },
@@ -143,10 +164,10 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={loginScreenStyles.ROOT} preset="scroll">
       <StatusBar backgroundColor="black" />
       <Wallpaper />
-      <ScrollView>
         <View style={loginScreenStyles.MAINCONTAINER}>
           <View style={loginScreenStyles.ROOT}>
             <Icon icon={"loginScreenLogo"} style={loginScreenStyles.LOGO} />
+            
             <Text style={loginScreenStyles.WELCOMETEXT} tx="loginScreen.welcometext"></Text>
             <Text style={loginScreenStyles.SIGNINWELCOMETEXT} tx="loginScreen.signintext"></Text>
             <View style={loginScreenStyles.EMAILVIEW}>
@@ -188,7 +209,6 @@ export const LoginScreen = observer(function LoginScreen() {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
     </Screen>
   )
 })

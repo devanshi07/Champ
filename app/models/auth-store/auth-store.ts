@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { UserDetailsModel } from "../user-details/user-details"
 /**
  * Model description here for TypeScript hints.
  */
@@ -6,20 +7,16 @@ export const AuthStoreModel = types
   .model("AuthStore")
   .props({
     isLogin: types.optional(types.boolean,false),
-    userEmail: types.optional(types.string,""),
-    userName: types.optional(types.string,""),
-    
+    userDetails: types.optional(UserDetailsModel,{})
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
     updateLoginStatus(value:boolean) {
       self.isLogin = value
     },
-    updateUserDetails(email: string,name:string){
-      self.userEmail = email
-      self.userName = name
-      // console.log("name: ",self.userName)
-      // console.log("email ",self.userEmail)
+    updateUserDetails(value:any){
+      //console.log(value)
+      self.userDetails.updateUserInfo(value)
     }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

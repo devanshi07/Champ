@@ -30,6 +30,7 @@ export type RootParamList = {
 
 const Stack = createNativeStackNavigator<RootParamList>()
 const authStack = () => {
+  console.log("enter in auth stack")
   return (
     <Stack.Navigator
       screenOptions={{
@@ -49,6 +50,7 @@ const authStack = () => {
 }
 const RootStack = observer(() => {
   const { authStore } = useStores();
+  console.log("Enter rootstack..")
   return (
     <Stack.Navigator
       screenOptions={{

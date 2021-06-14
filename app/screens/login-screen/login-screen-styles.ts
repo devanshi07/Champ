@@ -9,10 +9,11 @@ export const loginScreenStyles = {
     } as ViewStyle,
     MAINCONTAINER: {
         flex:1,
-        marginHorizontal: scale(33.3)
+        marginHorizontal: scale(33.3),
     }as ViewStyle,
     BOTTOMVIEW: {
-        marginBottom:verticalScale(50.7),
+        height:verticalScale(116.6),
+        marginBottom:verticalScale(36.7),
         justifyContent:"flex-end"
     }as ViewStyle,
     ERRORMSGVIEW: {
@@ -23,7 +24,6 @@ export const loginScreenStyles = {
         justifyContent: "center",
         backgroundColor: '#eece00',
         marginTop: verticalScale(33.3),
-        marginBottom:verticalScale(160.7)
     } as ViewStyle,
     FACEBOOKBTN: {
         height: verticalScale(53.3),
@@ -46,12 +46,12 @@ export const loginScreenStyles = {
     LOGO: {
         width: scale(66.7),
         height: verticalScale(66.7),
-        marginTop: verticalScale(50.7),
+        marginTop: verticalScale(32.7),
     } as ImageStyle,
     //style for all text
     WELCOMETEXT: {
         fontSize: moderateVerticalScale(30), 
-        marginTop: 18.7,
+        marginTop: verticalScale(18.7),
         fontFamily: typography.semiBold
     } as TextStyle,
     SIGNINWELCOMETEXT: {
@@ -80,7 +80,7 @@ export const loginScreenStyles = {
     SIGNINTEXT: {
         fontSize: moderateVerticalScale(15.3),
         alignSelf: "center",
-        letterSpacing: 3.07,
+        letterSpacing: scale(3.07),
         color: color.palette.black,
         fontFamily:typography.regular
     } as TextStyle,
