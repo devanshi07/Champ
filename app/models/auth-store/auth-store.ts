@@ -11,12 +11,19 @@ export const AuthStoreModel = types
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
-    updateLoginStatus(value:boolean) {
-      self.isLogin = value
-    },
     updateUserDetails(value:any){
-      //console.log(value)
-      self.userDetails.updateUserInfo(value)
+      self.isLogin=true
+      self.userDetails.userEmail=value.email
+      self.userDetails.userName = value.name
+      self.userDetails.dateOfBirth = value.dateOfBirth
+      self.userDetails.profileUrl = value.url
+    },
+    removeAccess(){
+      self.isLogin=false
+      self.userDetails.userEmail=""
+      self.userDetails.userName = ""
+      self.userDetails.dateOfBirth = ""
+      self.userDetails.profileUrl = ""
     }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 

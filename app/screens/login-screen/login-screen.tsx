@@ -45,8 +45,6 @@ export const LoginScreen = observer(function LoginScreen() {
         url:userInfo.user.photo
       }
       authStore.updateUserDetails(user_Info)
-      //authStore.updateUserDetails(userInfo.user.email,userInfo.user.name);
-      authStore.updateLoginStatus(true);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -83,7 +81,6 @@ export const LoginScreen = observer(function LoginScreen() {
         url:""
       }
       authStore.updateUserDetails(userInfo)
-      authStore.updateLoginStatus(true);//set login value true
       setEmail("");
       setPassword("");
     }
@@ -151,7 +148,6 @@ export const LoginScreen = observer(function LoginScreen() {
           AccessToken.getCurrentAccessToken().then(data => {
             const accessToken = data.accessToken.toString();
             getInfoFromToken(accessToken)
-            authStore.updateLoginStatus(true);
           });
         }
       },
@@ -160,6 +156,19 @@ export const LoginScreen = observer(function LoginScreen() {
       }
     );
   }
+  const renderError = (error) => (    
+  <Text tx={error} style={loginScreenStyles.ERRORMSGTEXT} />
+    )
+  const renderBotton = (isgmail:boolean,text:string) => {
+    return(
+<TouchableOpacity onPress={() => isgmail ? signIn() : checkFacebbokLogin() }
+              style={isgmail ? loginScreenStyles.GMAILBTN :  loginScreenStyles.FACEBOOKBTN}>
+              <Text tx={text} style={loginScreenStyles.BTNTEXTSTYLE} />
+            </TouchableOpacity>
+    );
+  }
+
+  
   return (
     <Screen style={loginScreenStyles.ROOT} preset="scroll">
       <StatusBar backgroundColor="black" />
@@ -188,9 +197,9 @@ export const LoginScreen = observer(function LoginScreen() {
                 placeholderTextColor={color.palette.white}
                 style={loginScreenStyles.TEXTINPUTSTYLE} />
               {passwordError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
-                <Text tx="loginScreen.passwordErrorLength" style={loginScreenStyles.ERRORMSGTEXT} />
-                <Text tx="loginScreen.passwordErrorAlpha" style={loginScreenStyles.ERRORMSGTEXT} />
-                <Text tx="loginScreen.passwordErrorSpecialChar" style={loginScreenStyles.ERRORMSGTEXT} />
+                {renderError("loginScreen.passwordErrorLength")}
+                {renderError("loginScreen.passwordErrorAlpha")}
+                {renderError("loginScreen.passwordErrorSpecialChar")}
               </View> : <></>}
             </View>
             <TouchableOpacity onPress={() => checkValidation()}
@@ -199,14 +208,8 @@ export const LoginScreen = observer(function LoginScreen() {
             </TouchableOpacity>
           </View>
           <View style={loginScreenStyles.BOTTOMVIEW}>
-            <TouchableOpacity onPress={() => checkFacebbokLogin()}
-              style={loginScreenStyles.FACEBOOKBTN}>
-              <Text tx="loginScreen.facebook" style={loginScreenStyles.BTNTEXTSTYLE} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={signIn}
-              style={loginScreenStyles.GMAILBTN}>
-              <Text tx="loginScreen.gmail" style={loginScreenStyles.BTNTEXTSTYLE} />
-            </TouchableOpacity>
+            {renderBotton(false,"loginScreen.facebook")}
+            {renderBotton(true,"loginScreen.gmail")}
           </View>
         </View>
     </Screen>

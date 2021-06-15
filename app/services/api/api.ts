@@ -99,4 +99,28 @@ export class Api {
       return { kind: "bad-data" }
     }
   }
+  //get parent categories
+  async getParentCategory(id: number): Promise<Types.getParentCategory> {
+    // make the api call
+    console.tron.log("get parent category",this.apisauce)
+    const response: ApiResponse<any> = await this.apisauce.get(`http://boxing.anasource.com:90/api/category/0`)
+
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    // transform the data into the format we are expecting
+    try {
+      const resultUser: Types.User = {
+        id: response.data.id,
+        name: response.data.name,
+      }
+      return { kind: "ok", parentCategory: response.data }
+    } catch {
+      return { kind: "bad-data" }
+    }
+  }
+
 }

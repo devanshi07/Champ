@@ -13,16 +13,8 @@ export const UserDetailsModel = types
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
-    updateUserInfo(value:any){
-      self.userEmail = value.email
-      self.userName = value.name
-      self.dateOfBirth = value.dateOfBirth
-      self.profileUrl = value.url
-      console.log("name: ",self.userName)
-      console.log("email: ",self.userEmail)
-      console.log("date: ",self.dateOfBirth)
-      console.log("url: ",self.profileUrl)
-    }
+    
+    
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
   /**

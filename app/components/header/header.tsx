@@ -7,6 +7,7 @@ import { Icon } from "../icon/icon"
 import { color, spacing ,typography} from "../../theme"
 import { translate } from "../../i18n/"
 import { moderateVerticalScale, scale, verticalScale } from "../../utils/scale"
+import { useNavigation } from "@react-navigation/native"
 
 // static styles
 const ROOT: ViewStyle = {
@@ -38,7 +39,7 @@ export function Header(props: HeaderProps) {
     titleStyle,
   } = props
   const header = headerText || (headerTx && translate(headerTx)) || ""
-  
+  const navigation = useNavigation<any>()
   return (
     <View style={{ ...ROOT, ...style }}>
       {leftIcon ? (
@@ -52,7 +53,7 @@ export function Header(props: HeaderProps) {
         <Text style={{ ...TITLE, ...titleStyle }} text={header} />
       </View>
       {rightIcon ? (
-        <Button preset="link" onPress={onRightPress}>
+        <Button preset="link" onPress={() => navigation.toggleDrawer()}>
           <Icon icon={"rightIcon"} style={RIGHT1} />
         </Button>
       ) : (
