@@ -8,27 +8,13 @@ import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
+import { createDrawerNavigator} from "@react-navigation/drawer"
 
 import { SplashScreen, DashboardScreen } from "../screens"
 
-import { View, Text, TouchableOpacity, ImageBackground, Image } from "react-native"
-import { Icon } from "../components"
-import { color, typography } from "../theme"
-import {DrawerContent} from './drawer-navigator'
-import { UserDetailsModel, useStores } from "../models"
-import { moderateVerticalScale, scale, verticalScale } from "../utils/scale"
-
-// import {
-//   Avatar,
-//   Title,
-//   Caption,
-//   Paragraph,
-//   Drawer,
-//   Text,
-//   TouchableRipple,
-//   Switch
-// } from "react-native-paper"
+import { DrawerContent } from './drawer-navigator'
+import { MyTabBar } from './bottom-navigator'
+import { color } from "../theme"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -72,11 +58,11 @@ function DrawerStack() {
       hideStatusBar={true}
       drawerPosition="right"
       drawerType="slide"
-      drawerStyle={{ backgroundColor: "black" }}
       drawerContent={(props) => <DrawerContent {...props} />}
+      screenOptions={{swipeEnabled:false}}
       drawerContentOptions={{
         activeBackgroundColor: "#5cbbff",
-        activeTintColor: "#ffffff",
+        activeTintColor: color.palette.yellow,
         inactiveBackgroundColor: "black",
         inactiveTintColor: "white",
       }}>
@@ -86,9 +72,7 @@ function DrawerStack() {
 }
 function BottomTabStack() {
   return (
-    <Tab.Navigator
-      tabBar={props => <MyTabBar {...props} />}
-      >
+    <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="dashboard" component={DashboardScreen}
         options={{
           tabBarLabel: "Dashboard",
@@ -100,109 +84,6 @@ function BottomTabStack() {
     </Tab.Navigator>
   );
 }
-
-function MyTabBar({ navigation, descriptors, state }) {
-  return (
-    <View style={{ flexDirection: "row" }}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
-
-        const isFocused = state.index === index;
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-        return (
-          <View>
-            {isFocused ? <View style={{
-              borderBottomColor: isFocused ? "white" : "yellow",
-              borderBottomWidth: 16,
-              borderLeftWidth: 105,
-              borderLeftColor: "transparent",
-              borderRightWidth: 105,
-              borderRightColor: "transparent",
-              borderEndColor: "transparent",
-              height: 0,
-              width: 187.7,
-              left: 0,
-              top: -16,
-              bottom: -2,
-              position: "absolute",
-              backgroundColor: "transparent"
-            }}></View> : <></>}
-            <TouchableOpacity accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{ backgroundColor: isFocused ? "white" : "yellow", height: verticalScale(91.3), width: scale(187.7), borderTopColor: "transparent", justifyContent: "center" }}>
-              <Icon icon={label !== "Dashboard" ? "userIcon" : "homeIcon"} style={{ height: 23.3, alignSelf: "center", marginBottom: verticalScale(10),marginTop:verticalScale(11) }} />
-              <Text style={{ color: color.palette.black, alignSelf: "center", fontFamily: typography.regular, fontSize: moderateVerticalScale(17.3),marginBottom:verticalScale(19.7) }}>
-                {label}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )
-      })}
-    </View>
-  );
-}
-// function DrawerContent({ navigation, props }) {
-//   const { authStore } = useStores()
-
-//   return (
-//     <View style={{ flex: 1, backgroundColor: "black", marginHorizontal: 33.3 }}>
-//       <DrawerContentScrollView {...props} style={{ backgroundColor: "black" }}>
-//         <View style={{ flex: 1 }}>
-//           <View style={{}}>
-//             <Icon icon="loginScreenLogo" style={{ width: 36, height: 36 }} />
-//             <Text style={{
-//               fontSize: 23.8,
-//               marginTop: 3,
-//               fontWeight: "bold",
-//               color: "#fefefe"
-//             }}>Boxing</Text>
-//             <Text style={{
-//               fontSize: 6,
-//               color: '#fefefe',
-//               letterSpacing: 2.4
-//             }}>by Tatvasoft</Text>
-//             <Text style={{ color: "white" }}>{authStore.userDetails.userName}</Text>
-//           </View>
-
-//           <DrawerItem label="BottomStack" labelStyle={{ color: "#fefefe", fontSize: 20 }}
-//             onPress={() => { navigation.navigate("bottomstack") }} />
-//         </View>
-//       </DrawerContentScrollView>
-
-//       <TouchableOpacity style={{ flex: 0.1, marginBottom: 49.7, padding: 0 }}
-//         onPress={() => {
-// authStore.removeAccess()        
-// }}>
-//         <Text style={{ color: "white", fontFamily: typography.regular, fontSize: 20, lineHeight: 50 }}>LOG OUT</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
 /**
  * A list of routes from which we're allowed to leave the app when
  * the user presses the back button on Android.

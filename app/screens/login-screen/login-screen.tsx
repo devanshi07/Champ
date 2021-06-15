@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { View, TextInput, TouchableOpacity, StatusBar, ScrollView, Alert } from "react-native"
+import { View, TextInput, TouchableOpacity, StatusBar, Alert } from "react-native"
 import { Icon, Screen, Text, Wallpaper } from "../../components"
 //import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
@@ -23,26 +23,21 @@ export const LoginScreen = observer(function LoginScreen() {
   }, []);
 
   //All hooks
-  const [user, setUser] = React.useState({})
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [emailError, setEmailError] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [fbuser, setFbUser] = React.useState({});
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [emailError, setEmailError] = React.useState<boolean>(false);
+  const [passwordError, setPasswordError] = React.useState<boolean>(false);
 
   //for google sign in
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log("success.... ", userInfo)
-      setUser(userInfo.user.email);
-      console.log("user info ....",userInfo.user.email)
       let user_Info = {
-        name : userInfo.user.name,
+        name: userInfo.user.name,
         email: userInfo.user.email,
         dateOfBirth: "",
-        url:userInfo.user.photo
+        url: userInfo.user.photo
       }
       authStore.updateUserDetails(user_Info)
     } catch (error) {
@@ -75,10 +70,10 @@ export const LoginScreen = observer(function LoginScreen() {
     }
     else {
       let userInfo = {
-        name : "",
+        name: "",
         email: email,
         dateOfBirth: "",
-        url:""
+        url: ""
       }
       authStore.updateUserDetails(userInfo)
       setEmail("");
@@ -86,7 +81,7 @@ export const LoginScreen = observer(function LoginScreen() {
     }
   }
   //check email while entering the value
-  function checkEmail(text) {
+  function checkEmail(text: string) {
     if (text == "") {
       setEmailError(true)
     }
@@ -96,7 +91,7 @@ export const LoginScreen = observer(function LoginScreen() {
     }
   }
   //check password while entering the value
-  function checkPassword(text) {
+  function checkPassword(text: string) {
     if (text == "") {
       setPasswordError(true)
     }
@@ -119,15 +114,13 @@ export const LoginScreen = observer(function LoginScreen() {
         if (error) {
           console.log('login info has error: ' + error);
         } else {
-          setFbUser({ userInfo: user.email });
           let user_Info = {
-            name : user.name,
+            name: user.name,
             email: user.email,
             dateOfBirth: "",
             url: ""
           }
           authStore.updateUserDetails(user_Info)
-          //authStore.updateUserDetails(user.email,user.name)
           console.log('result:', user);
         }
       },
@@ -156,62 +149,60 @@ export const LoginScreen = observer(function LoginScreen() {
       }
     );
   }
-  const renderError = (error) => (    
-  <Text tx={error} style={loginScreenStyles.ERRORMSGTEXT} />
-    )
-  const renderBotton = (isgmail:boolean,text:string) => {
-    return(
-<TouchableOpacity onPress={() => isgmail ? signIn() : checkFacebbokLogin() }
-              style={isgmail ? loginScreenStyles.GMAILBTN :  loginScreenStyles.FACEBOOKBTN}>
-              <Text tx={text} style={loginScreenStyles.BTNTEXTSTYLE} />
-            </TouchableOpacity>
+  const renderError = (error) => (
+    <Text tx={error} style={loginScreenStyles.ERRORMSGTEXT} />
+  )
+  const renderBotton = (isgmail: boolean, text: string) => {
+    return (
+      <TouchableOpacity onPress={() => isgmail ? signIn() : checkFacebbokLogin()}
+        style={isgmail ? loginScreenStyles.GMAILBTN : loginScreenStyles.FACEBOOKBTN}>
+        <Text tx={text} style={loginScreenStyles.BTNTEXTSTYLE} />
+      </TouchableOpacity>
     );
   }
 
-  
   return (
     <Screen style={loginScreenStyles.ROOT} preset="scroll">
       <StatusBar backgroundColor="black" />
       <Wallpaper />
-        <View style={loginScreenStyles.MAINCONTAINER}>
-          <View style={loginScreenStyles.ROOT}>
-            <Icon icon={"loginScreenLogo"} style={loginScreenStyles.LOGO} />
-            
-            <Text style={loginScreenStyles.WELCOMETEXT} tx="loginScreen.welcometext"></Text>
-            <Text style={loginScreenStyles.SIGNINWELCOMETEXT} tx="loginScreen.signintext"></Text>
-            <View style={loginScreenStyles.EMAILVIEW}>
-              <Text tx="loginScreen.emailAddress" style={loginScreenStyles.TEXTSTYLE} />
-              <TextInput placeholder="Enter Email"
-                onChangeText={text => checkEmail(text)}
-                placeholderTextColor={color.palette.white}
-                style={loginScreenStyles.TEXTINPUTSTYLE} />
-              {emailError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
-                <Text tx="loginScreen.emailErrorMsg" style={loginScreenStyles.ERRORMSGTEXT} />
-              </View> : <></>}
-            </View>
-            <View style={loginScreenStyles.PASSWORDVIEW}>
-              <Text tx="loginScreen.password" style={loginScreenStyles.TEXTSTYLE} />
-              <TextInput placeholder="Enter Password"
-                onChangeText={text => checkPassword(text)}
-                secureTextEntry={true}
-                placeholderTextColor={color.palette.white}
-                style={loginScreenStyles.TEXTINPUTSTYLE} />
-              {passwordError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
-                {renderError("loginScreen.passwordErrorLength")}
-                {renderError("loginScreen.passwordErrorAlpha")}
-                {renderError("loginScreen.passwordErrorSpecialChar")}
-              </View> : <></>}
-            </View>
-            <TouchableOpacity onPress={() => checkValidation()}
-              style={loginScreenStyles.SIGNINBTN}>
-              <Text tx="loginScreen.signIn" style={loginScreenStyles.SIGNINTEXT} />
-            </TouchableOpacity>
+      <View style={loginScreenStyles.MAINCONTAINER}>
+        <View style={loginScreenStyles.ROOT}>
+          <Icon icon={"loginScreenLogo"} style={loginScreenStyles.LOGO} />
+          <Text style={loginScreenStyles.WELCOMETEXT} tx="loginScreen.welcometext"></Text>
+          <Text style={loginScreenStyles.SIGNINWELCOMETEXT} tx="loginScreen.signintext"></Text>
+          <View style={loginScreenStyles.EMAILVIEW}>
+            <Text tx="loginScreen.emailAddress" style={loginScreenStyles.TEXTSTYLE} />
+            <TextInput placeholder="Enter Email"
+              onChangeText={text => checkEmail(text)}
+              placeholderTextColor={color.palette.white}
+              style={loginScreenStyles.TEXTINPUTSTYLE} />
+            {emailError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
+              {renderError("loginScreen.emailErrorMsg")}
+            </View> : <></>}
           </View>
-          <View style={loginScreenStyles.BOTTOMVIEW}>
-            {renderBotton(false,"loginScreen.facebook")}
-            {renderBotton(true,"loginScreen.gmail")}
+          <View style={loginScreenStyles.PASSWORDVIEW}>
+            <Text tx="loginScreen.password" style={loginScreenStyles.TEXTSTYLE} />
+            <TextInput placeholder="Enter Password"
+              onChangeText={text => checkPassword(text)}
+              secureTextEntry={true}
+              placeholderTextColor={color.palette.white}
+              style={loginScreenStyles.TEXTINPUTSTYLE} />
+            {passwordError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
+              {renderError("loginScreen.passwordErrorLength")}
+              {renderError("loginScreen.passwordErrorAlpha")}
+              {renderError("loginScreen.passwordErrorSpecialChar")}
+            </View> : <></>}
           </View>
+          <TouchableOpacity onPress={() => checkValidation()}
+            style={loginScreenStyles.SIGNINBTN}>
+            <Text tx="loginScreen.signIn" style={loginScreenStyles.SIGNINTEXT} />
+          </TouchableOpacity>
         </View>
+        <View style={loginScreenStyles.BOTTOMVIEW}>
+          {renderBotton(false, "loginScreen.facebook")}
+          {renderBotton(true, "loginScreen.gmail")}
+        </View>
+      </View>
     </Screen>
   )
 })
