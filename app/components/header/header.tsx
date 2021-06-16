@@ -22,6 +22,7 @@ const TITLE: TextStyle = {
   textAlign: "center",
   fontSize: moderateVerticalScale(24),
   alignSelf: "center",
+  textTransform:"capitalize"
 }
 const TITLE_MIDDLE: ViewStyle = {
   flex: 1,
@@ -31,7 +32,14 @@ const TITLE_MIDDLE: ViewStyle = {
 }
 const LEFT: ViewStyle = {
   width: 30,
-  marginLeft: scale(33)
+  marginLeft: scale(33),
+}
+const LEFT1: ImageStyle = {
+  width: scale(30),
+  marginLeft: scale(33.3),
+  height: verticalScale(16.3),
+  marginBottom: verticalScale(18.3),
+  marginTop:verticalScale(17.3)
 }
 const RIGHT: ViewStyle = {
   width: scale(20.7),
@@ -67,7 +75,7 @@ export function Header(props: HeaderProps) {
 
       {leftIcon ? (
         <Button preset="link" onPress={() => navigation.goBack()}>
-          <Icon icon={"leftIcon"} />
+          <Icon icon={"leftIcon"} style={LEFT1}/>
         </Button>
       ) : (
         <View style={LEFT} />

@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { SubCategoryDetailsModel } from "../sub-category-details/sub-category-details"
 
 /**
  * Model description here for TypeScript hints.

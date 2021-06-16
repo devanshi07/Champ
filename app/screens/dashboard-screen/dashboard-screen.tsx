@@ -1,8 +1,8 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, TouchableOpacity,  FlatList } from "react-native"
+import { ViewStyle, TouchableOpacity, FlatList, View, ActivityIndicator } from "react-native"
 import { Screen, Text, Wallpaper, Header } from "../../components"
-import { useIsFocused, useNavigation } from "@react-navigation/native"
+import {  useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { color } from "../../theme"
 import { dashboardScreenStyles } from "./dashboard-styles"
@@ -21,35 +21,44 @@ export const DashboardScreen = observer(function DashboardScreen() {
   // const rootStore = useStores()
 
   // Pull in navigation via hook
-  // const navigation = useNavigation()
-  const isFocused = useIsFocused()
+  const navigation = useNavigation()
+  //const isFocused = useIsFocused()
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     console.log("inside...")
     callApi()
-  }, [isFocused])
+  }, [])
 
-  const callApi = () =>{
+  const callApi = () => {
+    setLoad(true)
     parentCategoryStore.getParentCategoryData(0)
+    setLoad(false)
   }
-  const renderView = ({item,index}) => {
-    return(
-    <TouchableOpacity
-      style={dashboardScreenStyles.BUTTON}>
-      <Text style={dashboardScreenStyles.TEXTSTYLE}>{item.name}</Text>
-    </TouchableOpacity>
+  const renderView = ({ item, index }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate("subcategory", { ParamId: item.id, ParamName: item.name });
+      }}
+        style={dashboardScreenStyles.BUTTON}>
+        <Text style={dashboardScreenStyles.TEXTSTYLE}>{item.name}</Text>
+      </TouchableOpacity>
     );
   }
   return (
     <Screen style={ROOT} preset="scroll">
       <Wallpaper />
-      <Header headerText="Dashboard" rightIcon="rightIcon" /> 
-        <FlatList
+      <Header headerText="Dashboard" rightIcon="rightIcon" />
+      {load ? <View style={dashboardScreenStyles.ACTIVITYINDICATOR}>
+        <ActivityIndicator color="white" size={70} />
+      </View> : <></>}
+      <FlatList
         contentContainerStyle={dashboardScreenStyles.FLATLIST}
-          data={parentCategoryStore.parentCategoryDetails}
-          keyExtractor={(id) => id}
-          renderItem={renderView}
-        />
+        data={parentCategoryStore.parentCategoryDetails}
+        keyExtractor={(item) => item.id}
+        key={parentCategoryStore.parentCategoryDetails.id}
+        renderItem={renderView}
+      />
     </Screen>
   )
 })

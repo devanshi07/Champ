@@ -1,3 +1,4 @@
+import { SubCategoryStoreModel } from "../sub-category-store/sub-category-store"
 import { ParentCategoryStoreModel } from "../parent-category-store/parent-category-store"
 import { AuthStoreModel } from "../auth-store/auth-store"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
@@ -7,6 +8,7 @@ import { Instance, SnapshotOut, types } from "mobx-state-tree"
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
+  subCategoryStore: types.optional(SubCategoryStoreModel, {}),
   parentCategoryStore: types.optional(ParentCategoryStoreModel, {}),
   authStore: types.optional(AuthStoreModel, {}),
 

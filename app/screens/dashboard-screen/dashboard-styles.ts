@@ -12,7 +12,7 @@ export const dashboardScreenStyles = {
         color: color.palette.textColor,
         alignSelf: "center",
         fontSize: moderateVerticalScale(15.3),
-        letterSpacing: 3.07,
+        letterSpacing: scale(3.07),
         textTransform: "uppercase",
     } as TextStyle,
     BUTTON: {
@@ -21,7 +21,15 @@ export const dashboardScreenStyles = {
         borderWidth: 1,
         borderColor: "#ffffff",
         justifyContent: "center",
-        marginBottom: 16.7,
+        marginBottom: verticalScale(16.7),
         alignSelf: "center"
-    } as ViewStyle
+    } as ViewStyle,
+    ACTIVITYINDICATOR:{
+        width:"100%", 
+        height:"100%",
+        justifyContent:"center",
+        alignItems:"center",
+        opacity:0.5,
+        backgroundColor:"black"
+    }as ViewStyle
 }

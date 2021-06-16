@@ -1,6 +1,5 @@
 import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { withEnvironment } from "../extensions/with-environment";
-
 /**
  * Model description here for TypeScript hints.
  */
@@ -8,6 +7,7 @@ import { withEnvironment } from "../extensions/with-environment";
 export const ParentCategoryStoreModel = types
   .model("ParentCategoryStore")
   .props({
+    isLoading: types.optional(types.boolean, false),
     parentCategoryDetails: types.optional(types.frozen(), [])
   })
   .extend(withEnvironment)
@@ -21,15 +21,23 @@ export const ParentCategoryStoreModel = types
     },
     getParentCategoryData: flow(function* getParentCategoryData(parentId: number) {
       try {
+        self.isLoading = true;
         const res = yield self.environment.api.getParentCategory(parentId);
         if (res.kind === "ok" && res.status == 200) {
+          self.isLoading = false;
+
           self.parentCategoryDetails = res.parentCategory.data
+          console.tron.log(self.parentCategoryDetails)
           return { response: true, message: "Success." };
         }
         else {
+          self.isLoading = false;
+
           return { response: false, message: "Something went wrong." };
         }
       } catch (error) {
+        self.isLoading = false;
+
         console.log("parent error ", error)
         return { response: false, message: "Something went wrong." };
       }
