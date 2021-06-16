@@ -8,9 +8,9 @@ import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { createDrawerNavigator} from "@react-navigation/drawer"
+import { createDrawerNavigator } from "@react-navigation/drawer"
 
-import { SplashScreen, DashboardScreen } from "../screens"
+import {  DashboardScreen, SubcategoryScreen, ImageDetailScreen } from "../screens"
 
 import { DrawerContent } from './drawer-navigator'
 import { MyTabBar } from './bottom-navigator'
@@ -32,6 +32,9 @@ export type PrimaryParamList = {
   dashboard: undefined
   bottomstack: undefined
   drawerStack: undefined
+  subcategory: undefined
+  dashboradScreen: undefined
+  imagescreen:undefined
 }
 
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
@@ -59,7 +62,7 @@ function DrawerStack() {
       drawerPosition="right"
       drawerType="slide"
       drawerContent={(props) => <DrawerContent {...props} />}
-      screenOptions={{swipeEnabled:false}}
+      screenOptions={{ swipeEnabled: false }}
       drawerContentOptions={{
         activeBackgroundColor: "#5cbbff",
         activeTintColor: color.palette.yellow,
@@ -73,15 +76,27 @@ function DrawerStack() {
 function BottomTabStack() {
   return (
     <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen name="dashboard" component={DashboardScreen}
+      <Tab.Screen name="dashboard" component={DashboardStack}
         options={{
           tabBarLabel: "Dashboard",
         }} />
-      <Tab.Screen name="splash" component={SplashScreen}
+      <Tab.Screen name="imagescreen" component={ImageDetailScreen}
         options={{
           tabBarLabel: "Profile",
         }} />
     </Tab.Navigator>
+  );
+}
+function DashboardStack() {
+  return (
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+      gestureEnabled: true,
+    }}>
+      <Stack.Screen name="dashboradScreen" component={DashboardScreen} />
+      <Stack.Screen name="subcategory" component={SubcategoryScreen}  />
+      {/* <Stack.Screen name="Day1" component={Day1} options={{ headerShown: false }} /> */}
+    </Stack.Navigator>
   );
 }
 /**

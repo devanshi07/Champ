@@ -6,13 +6,23 @@ import { useStores } from "../models"
 import { drawerNavigatorStyles } from "./drawer-navigator-styles"
 import { verticalScale } from "../utils/scale"
 
-export function DrawerContent({ navigation, props }) {
+export function DrawerContent({ navigation, props,state }) {
   const { authStore, parentCategoryStore } = useStores()
   const renderView = ({ item, index }) => {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() =>{
+        navigation.navigate("subcategory", { ParamId: item.id, ParamName: item.name });        
+      }}>
         <Text style={drawerNavigatorStyles.LABELSTYLE}>{item.name}</Text>
       </TouchableOpacity>
+      // <DrawerItem label={item.name} 
+      // labelStyle={drawerNavigatorStyles.LABELSTYLE}
+      // onPress={() => 
+      // navigation.navigate("subcategory", { ParamId: item.id, ParamName: item.name })}
+      // activeTintColor="red"
+      // inactiveTintColor="white"
+      // activeBackgroundColor="transparent"
+      // focused={true}/>
     );
   }
   return (
@@ -26,13 +36,15 @@ export function DrawerContent({ navigation, props }) {
               <Text style={drawerNavigatorStyles.CAPTION}>by Tatvasoft</Text>
             </View>
             <View style={{ marginTop: verticalScale(66) }}>
-              <TouchableOpacity onPress={() => navigation.navigate("dashboard")}>
+              <TouchableOpacity onPress={() => navigation.navigate("dashboradScreen")}>
                 <Text style={drawerNavigatorStyles.LABELSTYLE}>Dashboard</Text>
               </TouchableOpacity>
               <FlatList
                 data={parentCategoryStore.parentCategoryDetails}
-                keyExtractor={(id) => id}
-                renderItem={renderView} />
+                keyExtractor={(item) => item.id}
+                renderItem={renderView}
+                key={parentCategoryStore.parentCategoryDetails.id}
+                />
             </View>
           </View>
         </DrawerContentScrollView>
