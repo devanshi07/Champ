@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, FlatList, TouchableOpacity, Image, View, ActivityIndicator } from "react-native"
 import { Screen, Text, Wallpaper, Header } from "../../components"
-import { useIsFocused, useRoute } from "@react-navigation/native"
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { color } from "../../theme"
 import { subCategoryScreenStyles } from "./subcategory-styles"
@@ -20,7 +20,7 @@ export const SubcategoryScreen = observer(function SubcategoryScreen() {
 
   // Pull in navigation via hook
   const route = useRoute<any>();
-  //const navigation = useNavigation();
+  const navigation = useNavigation();
   const { subCategoryStore } = useStores()
 
   const parent_id = route.params.ParamId;
@@ -41,9 +41,15 @@ export const SubcategoryScreen = observer(function SubcategoryScreen() {
   }
 
   const renderView = ({ item, index }) => {
-    console.tron.log(item)
     return (
-      <TouchableOpacity onPress={() => console.log(parent_id)}
+      <TouchableOpacity onPress={() => {
+        if (item.type !== 'Video') {
+          navigation.navigate("imagescreen", { ParamMedia: item.media });
+        }
+        else {
+          navigation.navigate("videoscreen", { ParamMedia: item.media });
+        }
+      }}
         style={subCategoryScreenStyles.BUTTON}>
         <View style={subCategoryScreenStyles.ITEMVIEW}>
           <Image source={{ uri: item.icon }} style={subCategoryScreenStyles.IMAGESTYLE} />

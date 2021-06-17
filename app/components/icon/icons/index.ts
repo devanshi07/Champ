@@ -8,7 +8,9 @@ export const icons = {
   loginScreenLogo: require("./l1.png"),
   leftIcon: require("./header_left_icon.png"),
   rightIcon: require("./header_right_icon.png"),
-
+  prevIcon:require("./gear_left_arrow.png"),
+  nextIcon:require("./gear_right_arrow.png"),
+  play:require("./play.png"),
 }
 
 export type IconTypes = keyof typeof icons

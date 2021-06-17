@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createDrawerNavigator } from "@react-navigation/drawer"
 
-import {  DashboardScreen, SubcategoryScreen, ImageDetailScreen } from "../screens"
+import {  DashboardScreen, SubcategoryScreen, ImageDetailScreen, VideoDetailScreen, ProfileScreen } from "../screens"
 
 import { DrawerContent } from './drawer-navigator'
 import { MyTabBar } from './bottom-navigator'
@@ -35,6 +35,8 @@ export type PrimaryParamList = {
   subcategory: undefined
   dashboradScreen: undefined
   imagescreen:undefined
+  videoscreen:undefined
+  imagescreen1:undefined
 }
 
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
@@ -75,12 +77,13 @@ function DrawerStack() {
 }
 function BottomTabStack() {
   return (
-    <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
+    <Tab.Navigator initialRouteName="dashboradScreen"
+    tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="dashboard" component={DashboardStack}
         options={{
           tabBarLabel: "Dashboard",
         }} />
-      <Tab.Screen name="imagescreen" component={ImageDetailScreen}
+      <Tab.Screen name="imagescreen1" component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
         }} />
@@ -95,6 +98,9 @@ function DashboardStack() {
     }}>
       <Stack.Screen name="dashboradScreen" component={DashboardScreen} />
       <Stack.Screen name="subcategory" component={SubcategoryScreen}  />
+      <Stack.Screen name="imagescreen" component={ImageDetailScreen}  />
+      <Stack.Screen name="videoscreen" component={VideoDetailScreen}  />
+
       {/* <Stack.Screen name="Day1" component={Day1} options={{ headerShown: false }} /> */}
     </Stack.Navigator>
   );
