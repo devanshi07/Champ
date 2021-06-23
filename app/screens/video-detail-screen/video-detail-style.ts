@@ -70,7 +70,8 @@ export const videoDetailScreenStyles = {
         fontSize: moderateVerticalScale(15.3),
         lineHeight: verticalScale(22),
         marginTop: verticalScale(16.7),
-        marginBottom: verticalScale(46.7)
+        marginBottom: verticalScale(46.7),
+        color:"white"
     } as TextStyle,
     FLATLIST: {
         marginVertical: verticalScale(7),

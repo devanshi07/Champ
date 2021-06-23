@@ -1,4 +1,4 @@
-import { Instance, SnapshotOut, types,flow } from "mobx-state-tree"
+import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { withEnvironment } from "../extensions/with-environment";
 import { SubCategoryDetailsModel } from "../sub-category-details/sub-category-details";
 
@@ -9,7 +9,10 @@ export const SubCategoryStoreModel = types
   .model("SubCategoryStore")
   .props({
     isLoading: types.optional(types.boolean, false),
-    subCategoryDetails: types.optional(types.frozen(), [])
+    subCategoryDetails: types.optional(types.frozen(), []),
+    checkSubCategory: types.optional(types.array(SubCategoryDetailsModel), []),
+
+    maxChildId: types.optional(types.number, 0),
   })
   .extend(withEnvironment)
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -22,7 +25,9 @@ export const SubCategoryStoreModel = types
           self.isLoading = false;
 
           self.subCategoryDetails = res.parentCategory.data
+         // self.checkSubCategory.push(self.subCategoryDetails)
           console.tron.log(self.subCategoryDetails)
+        
           return { response: true, message: "Success." };
         }
         else {
@@ -35,17 +40,22 @@ export const SubCategoryStoreModel = types
         return { response: false, message: "Something went wrong." };
       }
     }),
+    
+    setMaxChildId(id) {
+      self.maxChildId = id
+    },
+
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  /**
-  * Un-comment the following to omit model attributes from your snapshots (and from async storage).
-  * Useful for sensitive data like passwords, or transitive state like whether a modal is open.
+/**
+* Un-comment the following to omit model attributes from your snapshots (and from async storage).
+* Useful for sensitive data like passwords, or transitive state like whether a modal is open.
 
-  * Note that you'll need to import `omit` from ramda, which is already included in the project!
-  *  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
-  */
+* Note that you'll need to import `omit` from ramda, which is already included in the project!
+*  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
+*/
 
 type SubCategoryStoreType = Instance<typeof SubCategoryStoreModel>
-export interface SubCategoryStore extends SubCategoryStoreType {}
+export interface SubCategoryStore extends SubCategoryStoreType { }
 type SubCategoryStoreSnapshotType = SnapshotOut<typeof SubCategoryStoreModel>
-export interface SubCategoryStoreSnapshot extends SubCategoryStoreSnapshotType {}
+export interface SubCategoryStoreSnapshot extends SubCategoryStoreSnapshotType { }

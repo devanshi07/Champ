@@ -11,6 +11,11 @@ export const icons = {
   prevIcon:require("./gear_left_arrow.png"),
   nextIcon:require("./gear_right_arrow.png"),
   play:require("./play.png"),
+  delete:require("./delete.png"),
+  downArrow:require("./down_arrow.png"),
+  upArrow:require("./up_arrow.png"),
+  search:require("./search.png"),
+
 }
 
 export type IconTypes = keyof typeof icons

@@ -70,7 +70,8 @@ function DrawerStack() {
         activeTintColor: color.palette.yellow,
         inactiveBackgroundColor: "black",
         inactiveTintColor: "white",
-      }}>
+      }}
+      >
       <Drawers.Screen name="bottomstack" component={BottomTabStack} />
     </Drawers.Navigator>
   );

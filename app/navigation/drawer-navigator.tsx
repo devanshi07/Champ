@@ -6,8 +6,9 @@ import { useStores } from "../models"
 import { drawerNavigatorStyles } from "./drawer-navigator-styles"
 import { verticalScale } from "../utils/scale"
 
-export function DrawerContent({ navigation, props,state }) {
+export function DrawerContent({ navigation, props }) {
   const { authStore, parentCategoryStore } = useStores()
+  
   const renderView = ({ item, index }) => {
     return (
       <TouchableOpacity onPress={() =>{
@@ -27,8 +28,8 @@ export function DrawerContent({ navigation, props,state }) {
   }
   return (
     <View style={drawerNavigatorStyles.DRAWERSTYLE}>
-      <View style={drawerNavigatorStyles.ROOT}>
-        <DrawerContentScrollView {...props}>
+      <View style={drawerNavigatorStyles.ROOT} {...props}>
+        {/* <DrawerContentScrollView {...props}> */}
           <View style={drawerNavigatorStyles.UPPERPART}>
             <View>
               <Icon icon="loginScreenLogo" style={drawerNavigatorStyles.LOGO} />
@@ -47,7 +48,7 @@ export function DrawerContent({ navigation, props,state }) {
                 />
             </View>
           </View>
-        </DrawerContentScrollView>
+        {/* </DrawerContentScrollView> */}
         <TouchableOpacity style={drawerNavigatorStyles.BOTTOMPART}
           onPress={() => {
             authStore.removeAccess()

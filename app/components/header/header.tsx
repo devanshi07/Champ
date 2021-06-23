@@ -32,7 +32,6 @@ const TITLE_MIDDLE: ViewStyle = {
 }
 const LEFT: ViewStyle = {
   width: 30,
-  marginLeft: scale(33),
 }
 const LEFT1: ImageStyle = {
   width: scale(30),

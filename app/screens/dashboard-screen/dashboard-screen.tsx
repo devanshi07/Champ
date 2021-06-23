@@ -23,17 +23,17 @@ export const DashboardScreen = observer(function DashboardScreen() {
   // Pull in navigation via hook
   const navigation = useNavigation()
   //const isFocused = useIsFocused()
-  const [load, setLoad] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
-    console.log("inside...")
+    //console.log("inside...")
     callApi()
   }, [])
 
   const callApi = () => {
-    setLoad(true)
+    setisLoading(true)
     parentCategoryStore.getParentCategoryData(0)
-    setLoad(false)
+    setisLoading(false)
   }
   const renderView = ({ item, index }) => {
     return (
@@ -46,17 +46,16 @@ export const DashboardScreen = observer(function DashboardScreen() {
     );
   }
   return (
-    <Screen style={ROOT} preset="scroll">
+    <Screen style={ROOT} preset="fixed">
       <Wallpaper />
       <Header headerText="Dashboard" rightIcon="rightIcon" />
-      {load ? <View style={dashboardScreenStyles.ACTIVITYINDICATOR}>
+      {isLoading ? <View style={dashboardScreenStyles.ACTIVITYINDICATOR}>
         <ActivityIndicator color="white" size={70} />
       </View> : <></>}
       <FlatList
         contentContainerStyle={dashboardScreenStyles.FLATLIST}
         data={parentCategoryStore.parentCategoryDetails}
-        keyExtractor={(item) => item.id}
-        key={parentCategoryStore.parentCategoryDetails.id}
+        keyExtractor={(item,index) => index.toString()}
         renderItem={renderView}
       />
     </Screen>

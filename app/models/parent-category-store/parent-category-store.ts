@@ -1,5 +1,6 @@
 import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { withEnvironment } from "../extensions/with-environment";
+import { ParentCategoryDetailsModel } from "../parent-category-details/parent-category-details";
 /**
  * Model description here for TypeScript hints.
  */
@@ -8,7 +9,9 @@ export const ParentCategoryStoreModel = types
   .model("ParentCategoryStore")
   .props({
     isLoading: types.optional(types.boolean, false),
-    parentCategoryDetails: types.optional(types.frozen(), [])
+    parentCategoryDetails: types.optional(types.frozen(), []),
+    maxParentId: types.optional(types.number,3),
+    minParentId: types.optional(types.number,1),
   })
   .extend(withEnvironment)
   .views(self => ({
@@ -16,9 +19,7 @@ export const ParentCategoryStoreModel = types
   }))
  // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
-    setData(data) {
-      self.parentCategoryDetails = data
-    },
+    
     getParentCategoryData: flow(function* getParentCategoryData(parentId: number) {
       try {
         self.isLoading = true;
@@ -27,7 +28,6 @@ export const ParentCategoryStoreModel = types
           self.isLoading = false;
 
           self.parentCategoryDetails = res.parentCategory.data
-          console.tron.log(self.parentCategoryDetails)
           return { response: true, message: "Success." };
         }
         else {
