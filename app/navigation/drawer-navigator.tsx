@@ -1,5 +1,4 @@
 import React from "react"
-import { DrawerContentScrollView } from "@react-navigation/drawer"
 import { View, Text, TouchableOpacity, FlatList } from "react-native"
 import { Icon } from "../components"
 import { useStores } from "../models"
@@ -42,7 +41,7 @@ export function DrawerContent({ navigation, props }) {
               </TouchableOpacity>
               <FlatList
                 data={parentCategoryStore.parentCategoryDetails}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item,index) => index.toString()}
                 renderItem={renderView}
                 key={parentCategoryStore.parentCategoryDetails.id}
                 />

@@ -15,6 +15,7 @@ export const icons = {
   downArrow:require("./down_arrow.png"),
   upArrow:require("./up_arrow.png"),
   search:require("./search.png"),
+  nothing:require("./attention.png")
 
 }
 

@@ -3,7 +3,10 @@ import { color } from '../../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../../utils/scale';
 
 export const dashboardScreenStyles = {
-
+    ROOT: {
+        backgroundColor: color.palette.black,
+        flex: 1,
+    } as ViewStyle,
     FLATLIST: {
         justifyContent: "center",
         flexGrow: 1
@@ -24,12 +27,12 @@ export const dashboardScreenStyles = {
         marginBottom: verticalScale(16.7),
         alignSelf: "center"
     } as ViewStyle,
-    ACTIVITYINDICATOR:{
-        width:"100%", 
-        height:"100%",
-        justifyContent:"center",
-        alignItems:"center",
-        opacity:0.5,
-        backgroundColor:"black"
-    }as ViewStyle
+    ACTIVITYINDICATOR: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        opacity: 0.5,
+        backgroundColor: "black"
+    } as ViewStyle
 }

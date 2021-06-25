@@ -9,10 +9,8 @@ export const SubCategoryStoreModel = types
   .model("SubCategoryStore")
   .props({
     isLoading: types.optional(types.boolean, false),
-    subCategoryDetails: types.optional(types.frozen(), []),
+    subCategoryDetails: types.optional(types.array(types.frozen()), []),
     checkSubCategory: types.optional(types.array(SubCategoryDetailsModel), []),
-
-    maxChildId: types.optional(types.number, 0),
   })
   .extend(withEnvironment)
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -22,12 +20,15 @@ export const SubCategoryStoreModel = types
         self.isLoading = true;
         const res = yield self.environment.api.getParentCategory(parentId);
         if (res.kind === "ok" && res.status == 200) {
-          self.isLoading = false;
-
-          self.subCategoryDetails = res.parentCategory.data
-         // self.checkSubCategory.push(self.subCategoryDetails)
-          console.tron.log(self.subCategoryDetails)
-        
+          let index = self.subCategoryDetails.findIndex(x => x.parentId == parentId)
+          if(index == -1){
+            self.isLoading = false;
+            self.subCategoryDetails.push( {parentId: parentId, data: res.parentCategory.data})
+          }
+          else{
+            self.isLoading = false;
+            self.subCategoryDetails[parentId] == {parentId: parentId, data: res.parentCategory.data}
+          }
           return { response: true, message: "Success." };
         }
         else {
@@ -40,11 +41,6 @@ export const SubCategoryStoreModel = types
         return { response: false, message: "Something went wrong." };
       }
     }),
-    
-    setMaxChildId(id) {
-      self.maxChildId = id
-    },
-
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 /**

@@ -111,7 +111,7 @@ export class Api {
     }
     // transform the data into the format we are expecting
     try {
-      return { kind: "ok", parentCategory: response.data, status: response.status }
+      return { kind: "ok", parentCategory: response.data, status: response.status,parentId: id }
     } catch {
       return { kind: "bad-data" }
     }

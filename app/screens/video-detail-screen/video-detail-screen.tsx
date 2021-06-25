@@ -27,48 +27,87 @@ export const VideoDetailScreen = observer(function VideoDetailScreen() {
   const route = useRoute<any>();
   const medias = route.params.ParamMedia;
   let currentId = route.params.ParamId;
+  let parentId = route.params.ParamParentId;
 
   const nextButton = () => {
     currentId = currentId + 1;
-    console.tron.log("current id...", currentId)
-    console.tron.log("maximum id...", subCategoryStore.maxChildId)
-    
-    if (currentId <= subCategoryStore.maxChildId) {
-      let nextSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == currentId)
-      console.tron.log("media", nextSubCategory.id)
+    console.tron.log("parent id...", parentId)
+    // console.tron.log("maximum id...", subCategoryStore.maxChildId)
+
+    let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId)
+    let index = findParentCategory.data.findIndex(x => x.id == currentId)
+    console.tron.log("media.....", index)
+    //console.tron.log("max id.", subCategoryStore.maxChildId)
+
+    if (index != -1) {
+      let nextSubCategory = findParentCategory.data.find(x => x.id == currentId)
+      console.tron.log("media...", nextSubCategory.media)
       if (nextSubCategory.type !== 'Video') {
-        navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+        navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name,ParamParentId: parentId });
       }
       else {
-        navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+        navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name,ParamParentId: parentId });
       }
     }
-    else {
-      let currentSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == route.params.ParamId)
-
-      console.tron.log("current parent", currentSubCategory.parent_id)
-      if (currentSubCategory.parent_id <= parentCategoryStore.maxParentId) {
-        //Alert.alert("next route")
-
-        let nextParentCategory = parentCategoryStore.parentCategoryDetails.find(x => x.id == (currentSubCategory.parent_id + 1))
-        console.tron.log("next parent", nextParentCategory)
-        subCategoryStore.getSubCategoryData((currentSubCategory.parent_id + 1))
-        console.tron.log(subCategoryStore.subCategoryDetails)
-
-        let nextSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == currentId)
-        console.tron.log("media", nextSubCategory.id)
+    else{
+      console.tron.log(subCategoryStore.subCategoryDetails)
+      let index = subCategoryStore.subCategoryDetails.findIndex(x => x.parentId == parentId+1)
+      console.tron.log("parent id...",index)
+      if(index == -1){
+        subCategoryStore.getSubCategoryData(parentId+1)
+        console.tron.log(subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId+1))
+      }
+      else{
+        let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId+1)
+        let nextSubCategory = findParentCategory.data.find(x => x.id == currentId)
+        console.tron.log("media...", nextSubCategory.media)
         if (nextSubCategory.type !== 'Video') {
-          navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+          navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name,ParamParentId: parentId });
         }
         else {
-          navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+          navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name,ParamParentId: parentId });
         }
+
       }
-      else {
-        Alert.alert("wrong route")
-      }
-      //console.tron.log(parentCategoryStore.maxParentId)
+      
+
     }
+    // if (currentId <= subCategoryStore.maxChildId) {
+    //   let nextSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == currentId)
+    //   console.tron.log("media", nextSubCategory.id)
+    //   if (nextSubCategory.type !== 'Video') {
+    //     navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+    //   }
+    //   else {
+    //     navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+    //   }
+    // }
+    // else {
+    //   let currentSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == route.params.ParamId)
+
+    //   console.tron.log("current parent", currentSubCategory.parent_id)
+    //   if (currentSubCategory.parent_id <= parentCategoryStore.maxParentId) {
+    //     //Alert.alert("next route")
+
+    //     let nextParentCategory = parentCategoryStore.parentCategoryDetails.find(x => x.id == (currentSubCategory.parent_id + 1))
+    //     console.tron.log("next parent", nextParentCategory)
+    //     const data = subCategoryStore.getSubCategoryData((currentSubCategory.parent_id + 1))
+    //     console.tron.log(data)
+
+    //     let nextSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == currentId)
+    //     console.log("media", nextSubCategory.id)
+    //     if (nextSubCategory.type !== 'Video') {
+    //       navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+    //     }
+    //     else {
+    //       navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
+    //     }
+    //   }
+    //   else {
+    //     Alert.alert("wrong route")
+    //   }
+    //   //console.tron.log(parentCategoryStore.maxParentId)
+    // }
   }
   const renderView = ({ item, index }) => {
     var videoUrl = item.url.replace("https://youtu.be/", "");

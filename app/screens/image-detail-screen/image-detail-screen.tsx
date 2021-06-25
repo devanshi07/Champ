@@ -1,68 +1,107 @@
-import React from "react"
+import React, { useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View, TouchableOpacity, Dimensions, Alert } from "react-native"
+import { View, TouchableOpacity, Dimensions, FlatList, Alert, ActivityIndicator, ScrollView } from "react-native"
 import { Screen, Text, Wallpaper, Header, Icon } from "../../components"
 import Carousel, { Pagination } from "react-native-snap-carousel"
 import { useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
-import { color } from "../../theme"
 import { imageDetailScreenStyles } from "./image-detail-styles"
 import { useRoute } from "@react-navigation/native"
 import HTML from "react-native-render-html"
 import FastImage from "react-native-fast-image"
 import { verticalScale } from '../../utils/scale';
+import YoutubePlayer from "react-native-youtube-iframe";
 
 const SLIDER_WIDTH = Dimensions.get('window').width + 80
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
-  flex: 1,
-}
 export const ImageDetailScreen = observer(function ImageDetailScreen() {
-  // Pull in one of our MST stores
-  const { subCategoryStore,parentCategoryStore } = useStores()
-  // OR
-  // const rootStore = useStores()
 
-  // Pull in navigation via hook
+  const { subCategoryStore, parentCategoryStore } = useStores()
   const navigation = useNavigation()
-
   const route = useRoute<any>();
+  const [index, setIndex] = useState<number>(0)
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const isCarousel = useRef(null)
 
-  const [index, setIndex] = React.useState(0)
-  const isCarousel = React.useRef(null)
-  const medias = route.params.ParamMedia;
   let currentId = route.params.ParamId;
+  let parentId = route.params.ParamParentId;
+  let categoryIndex = route.params.ParamCategoryIndex;
 
+  let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId)
+  let subcategory = findParentCategory.data.find(x => x.id == currentId)
   const nextButton = () => {
+    console.tron.log(subCategoryStore.subCategoryDetails)
+
     currentId = currentId + 1;
-    console.tron.log("current id.......",currentId)
-    if (currentId <= subCategoryStore.maxChildId) {
-      let nextSubCategory = subCategoryStore.subCategoryDetails.find(x => x.id == currentId)
-      console.tron.log("media.....", nextSubCategory)
-      if (nextSubCategory.type !== 'Video') {
-        navigation.navigate("imagescreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
-      }
-      else {
-        navigation.navigate("videoscreen", { ParamMedia: nextSubCategory.media, ParamId: nextSubCategory.id, ParamName: nextSubCategory.name });
-      }
+    categoryIndex = categoryIndex + 1;
+    if (categoryIndex < findParentCategory.data.length) {
+      let nextSubCategory = findParentCategory.data.find(x => x.id == currentId)
+      navigation.navigate("imagescreen", { ParamId: nextSubCategory.id, ParamName: nextSubCategory.name, ParamParentId: parentId, ParamCategoryIndex: categoryIndex });
     }
     else {
-      console.tron.log(parentCategoryStore.maxParentId)
-      Alert.alert("wrong route")
+      let parentIndex = subCategoryStore.subCategoryDetails.findIndex(x => x.parentId == parentId + 1)
+      if (parentIndex != -1) {
+        let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId + 1)
+        let categoryIndex = 0
+        let nextSubCategory = findParentCategory.data[categoryIndex]
+        navigation.navigate("imagescreen", { ParamId: nextSubCategory.id, ParamName: nextSubCategory.name, ParamParentId: parentId + 1, ParamCategoryIndex: categoryIndex });
+      }
+      else {
+        if (parentId + 1 <= parentCategoryStore.parentCategoryDetails.length) {
+          setisLoading(true)
+          subCategoryStore.getSubCategoryData(parentId + 1)
+          setisLoading(false)
+        }
+        let parentIndex = subCategoryStore.subCategoryDetails.findIndex(x => x.parentId == parentId + 1)
+        if (parentIndex != -1) {
+          let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId + 1)
+          let categoryIndex = 0
+          let nextSubCategory = findParentCategory.data[categoryIndex]
+          navigation.navigate("imagescreen", { ParamId: nextSubCategory.id, ParamName: nextSubCategory.name, ParamParentId: parentId + 1, ParamCategoryIndex: categoryIndex });
+        }
+        else {
+          Alert.alert("Finished....")
+        }
+      }
     }
   }
+  const prevButton = () => {
+    currentId = currentId - 1;
+    categoryIndex = categoryIndex - 1;
+    if (categoryIndex >= 0) {
+      let prevSubCategory = findParentCategory.data.find(x => x.id == currentId)
+      navigation.navigate("imagescreen", { ParamId: prevSubCategory.id, ParamName: prevSubCategory.name, ParamParentId: parentId, ParamCategoryIndex: categoryIndex });
+    }
+    else {
+      let parentIndex = subCategoryStore.subCategoryDetails.findIndex(x => x.parentId == parentId - 1)
+      if (parentIndex != -1) {
+        let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId - 1)
+        let categoryIndex = findParentCategory.data.length - 1
+        let prevSubCategory = findParentCategory.data[categoryIndex]
+        navigation.navigate("imagescreen", { ParamId: prevSubCategory.id, ParamName: prevSubCategory.name, ParamParentId: parentId - 1, ParamCategoryIndex: categoryIndex });
+      }
+      else {
+        Alert.alert("Finished....")
+      }
+    }
+  }
+  const renderView = ({ item, index }) => {
+    var videoUrl = item.url.replace("https://youtu.be/", "");
+    return (
+      <View style={imageDetailScreenStyles.RENDERVIEW}>
+        <Text style={imageDetailScreenStyles.RENDERTITLE}>{item.caption}</Text>
+        <TouchableOpacity>
+          <YoutubePlayer height={verticalScale(250)} videoId={videoUrl} webViewStyle={imageDetailScreenStyles.RENDERIMAGE} />
+        </TouchableOpacity>
+        <HTML source={{ html: item.description }} baseFontStyle={imageDetailScreenStyles.RENDERDES} />
+      </View>
+    );
+  }
   const CarouselCardItem = ({ item, index }) => {
-    //console.tron.log(item.url)
     return (
       <View key={index}>
-        <FastImage style={{
-          alignSelf: 'center',
-          width: "100%",
-          height: verticalScale(270.7),
-          marginBottom: verticalScale(26.3),
-        }}
+        <FastImage style={imageDetailScreenStyles.SLIDERIMAGE}
           source={{
             uri: item.url,
             priority: FastImage.priority.normal,
@@ -76,19 +115,21 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
     )
   }
   return (
-    <Screen style={ROOT} preset="fixed">
+    <Screen style={imageDetailScreenStyles.MAINVIEW} preset="fixed">
       <Wallpaper />
       <Header headerText={route.params.ParamName} rightIcon="rightIcon" leftIcon="leftIcon" />
+      {isLoading ? <View style={imageDetailScreenStyles.ACTIVITYINDICATOR}>
+        <ActivityIndicator color="white" size={70} />
+      </View> : <></>}
       <View style={imageDetailScreenStyles.MAINVIEW}>
         <View style={imageDetailScreenStyles.TOPBUTTONVIEW}>
-
-          <TouchableOpacity style={imageDetailScreenStyles.PREVBUTTON}>
+          <TouchableOpacity onPress={() => prevButton()}
+            style={imageDetailScreenStyles.PREVBUTTON}>
             <View style={imageDetailScreenStyles.INNERBUTTONVIEW}>
               <Icon icon="prevIcon" style={imageDetailScreenStyles.BUTTONIMAGE} />
               <Text style={imageDetailScreenStyles.PREVBUTTONTEXT}>PREV</Text>
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => nextButton()}
             style={imageDetailScreenStyles.NEXTBUTTON}>
             <View style={imageDetailScreenStyles.INNERBUTTONVIEW}>
@@ -97,31 +138,45 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
             </View>
           </TouchableOpacity>
         </View>
-        <View
-          style={imageDetailScreenStyles.SLIDEVIEW}>
-          <Carousel
-            layoutCardOffset={9}
-            ref={isCarousel}
-            data={medias}
-            renderItem={CarouselCardItem}
-            sliderWidth={SLIDER_WIDTH}
-            itemWidth={ITEM_WIDTH}
-            keyExtractor={item => item.id}
-            onSnapToItem={(index) => setIndex(index)}
-            useScrollView={true}
-          />
-          <Pagination
-            dotsLength={medias.length}
-            activeDotIndex={index}
-            carouselRef={isCarousel}
-            dotStyle={imageDetailScreenStyles.PAGINATION}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-            inactiveDotColor="white"
-            dotColor="yellow"
-            tappableDots={true}
-          />
-        </View>
+        {subcategory.type == 'Image'
+          ? <View
+            style={imageDetailScreenStyles.SLIDEVIEW}>
+            <Carousel
+              layoutCardOffset={9}
+              ref={isCarousel}
+              data={subcategory.media}
+              renderItem={CarouselCardItem}
+              sliderWidth={SLIDER_WIDTH}
+              itemWidth={ITEM_WIDTH}
+              keyExtractor={item => item.id}
+              onSnapToItem={(index) => setIndex(index)}
+              useScrollView={true}
+            />
+            <Pagination
+              dotsLength={subcategory.media.length}
+              activeDotIndex={index}
+              carouselRef={isCarousel}
+              dotStyle={imageDetailScreenStyles.PAGINATION}
+              inactiveDotOpacity={0.4}
+              inactiveDotScale={0.6}
+              inactiveDotColor="white"
+              dotColor="yellow"
+              tappableDots={true}
+            />
+          </View>
+          : <FlatList
+          contentContainerStyle={imageDetailScreenStyles.FLATLIST}
+          data={subcategory.media}
+          keyExtractor={(item) => item.id.toString()}
+          extraData={subcategory.media}
+          renderItem={renderView}
+        />}
+        {subcategory.type == 'None' ?
+          <View
+            style={imageDetailScreenStyles.NONEVIEW}>
+            <Icon icon="nothing" style={imageDetailScreenStyles.NONEIMAGE} />
+            <Text style={imageDetailScreenStyles.NONETEXT}>Nothing....</Text>
+          </View> : <></>}
       </View>
     </Screen>
   )

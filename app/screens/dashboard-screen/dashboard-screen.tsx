@@ -1,18 +1,12 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, TouchableOpacity, FlatList, View, ActivityIndicator } from "react-native"
+import { TouchableOpacity, FlatList, View, ActivityIndicator } from "react-native"
 import { Screen, Text, Wallpaper, Header } from "../../components"
 import {  useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
-import { color } from "../../theme"
 import { dashboardScreenStyles } from "./dashboard-styles"
 import { useEffect } from "react"
 import { useState } from "react"
-
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
-  flex: 1,
-}
 
 export const DashboardScreen = observer(function DashboardScreen() {
   // Pull in one of our MST stores
@@ -22,14 +16,11 @@ export const DashboardScreen = observer(function DashboardScreen() {
 
   // Pull in navigation via hook
   const navigation = useNavigation()
-  //const isFocused = useIsFocused()
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    //console.log("inside...")
     callApi()
   }, [])
-
   const callApi = () => {
     setisLoading(true)
     parentCategoryStore.getParentCategoryData(0)
@@ -46,7 +37,7 @@ export const DashboardScreen = observer(function DashboardScreen() {
     );
   }
   return (
-    <Screen style={ROOT} preset="fixed">
+    <Screen style={dashboardScreenStyles.ROOT} preset="fixed">
       <Wallpaper />
       <Header headerText="Dashboard" rightIcon="rightIcon" />
       {isLoading ? <View style={dashboardScreenStyles.ACTIVITYINDICATOR}>
