@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, TouchableOpacity, Dimensions, FlatList, Alert, ActivityIndicator, ScrollView } from "react-native"
+import { View, TouchableOpacity, Dimensions, FlatList, Alert, ActivityIndicator } from "react-native"
 import { Screen, Text, Wallpaper, Header, Icon } from "../../components"
 import Carousel, { Pagination } from "react-native-snap-carousel"
 import { useNavigation } from "@react-navigation/native"
@@ -30,9 +30,10 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
 
   let findParentCategory = subCategoryStore.subCategoryDetails.find(x => x.parentId == parentId)
   let subcategory = findParentCategory.data.find(x => x.id == currentId)
-  const nextButton = () => {
-    console.tron.log(subCategoryStore.subCategoryDetails)
+  let parenCategory = parentCategoryStore.parentCategoryDetails.find(x => x.id == parentId)
+  subCategoryStore.visitedSubcategory(parentId, parenCategory.name, subcategory.id, subcategory.name, subcategory.media)
 
+  const nextButton = () => {
     currentId = currentId + 1;
     categoryIndex = categoryIndex + 1;
     if (categoryIndex < findParentCategory.data.length) {
@@ -99,6 +100,12 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
     );
   }
   const CarouselCardItem = ({ item, index }) => {
+    const dataIndex = subCategoryStore.visitedSubcategorydata.findIndex(x => x.categoryId == item.category_id)
+    const copyData = [...subCategoryStore.visitedSubcategorydata[dataIndex].media]
+    const index1 = copyData.findIndex(x => x.id == item.id)
+    if (index1 == -1) {
+      subCategoryStore.updateMediaList(parentId, parenCategory.name, subcategory.id, subcategory.name, item)
+    }
     return (
       <View key={index}>
         <FastImage style={imageDetailScreenStyles.SLIDERIMAGE}
@@ -165,12 +172,12 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
             />
           </View>
           : <FlatList
-          contentContainerStyle={imageDetailScreenStyles.FLATLIST}
-          data={subcategory.media}
-          keyExtractor={(item) => item.id.toString()}
-          extraData={subcategory.media}
-          renderItem={renderView}
-        />}
+            contentContainerStyle={imageDetailScreenStyles.FLATLIST}
+            data={subcategory.media}
+            keyExtractor={(item) => item.id.toString()}
+            extraData={subcategory.media}
+            renderItem={renderView}
+          />}
         {subcategory.type == 'None' ?
           <View
             style={imageDetailScreenStyles.NONEVIEW}>

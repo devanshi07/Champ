@@ -148,6 +148,43 @@ export const VideoDetailScreen = observer(function VideoDetailScreen() {
           extraData={medias}
           renderItem={renderView}
         />
+        {/* <View style={{ marginBottom: 31.7, marginTop: 17.3, width: "100%" }}>
+            <SectionList
+              contentContainerStyle={{}}
+              stickySectionHeadersEnabled={false}
+              sections={SECTIONS}
+              ItemSeparatorComponent={() => <View style={{ margin: 16 }} />}
+
+              renderSectionHeader={({ section }) => (
+                <>
+                  <Text style={{
+                    fontWeight: '800',
+                    fontSize: 18,
+                    color: '#f4f4f4',
+                    marginBottom: 16.3,
+                  }}>{section.name}</Text>
+
+                  <FlatList
+                    style={{ backgroundColor: "blue" }}
+                    horizontal
+                    data={section.data}
+                    renderItem={({ item }) => <ListItem item={item} />}
+                    showsHorizontalScrollIndicator={false}
+                    ItemSeparatorComponent={() => <View style={{ margin: 12.7 }} />}
+
+                  />
+
+                </>
+              )}
+              renderItem={({ item, section }) => {
+                return null;
+                // if (section.horizontal) {
+                //   return null;
+                // }
+                // return <ListItem item={item} />;
+              }}
+            />
+          </View>  */}
       </View>
     </Screen>
   )
