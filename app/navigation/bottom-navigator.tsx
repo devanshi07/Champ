@@ -37,7 +37,7 @@ export function MyTabBar({ navigation, descriptors, state }) {
         };
         return (
           <View {...{ key }}>
-            {isFocused ? <View style={isFocused ? bottomNavigatorStyles.WHITETRIANGLE : bottomNavigatorStyles.YELLOWTRIANGLE}></View> : <></>}
+            {isFocused ? <View style={bottomNavigatorStyles.WHITETRIANGLE}></View> : <></>}
             <TouchableOpacity accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}

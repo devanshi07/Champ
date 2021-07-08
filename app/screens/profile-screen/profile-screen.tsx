@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, View, Image, TouchableOpacity, Animated, StyleSheet, FlatList, Alert, TextInput, Dimensions } from "react-native"
+import { ScrollView, View, Image, TouchableOpacity, Animated, StyleSheet, FlatList, Alert, Switch, TextInput, Dimensions, BackHandler } from "react-native"
 import { Screen, Text, Wallpaper, Header, Icon } from "../../components"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
@@ -13,7 +13,7 @@ import Collapsible from 'react-native-collapsible'
 import * as Animatable from 'react-native-animatable'
 
 const MAX_HEIGHT = 260
-const MIN_HEIGHT = 160
+const MIN_HEIGHT = 150
 const HEIGHT_DIFF = MAX_HEIGHT - MIN_HEIGHT
 const DEVICE_WIDTH = Dimensions.get('window').width
 
@@ -21,7 +21,7 @@ const DEVICE_WIDTH = Dimensions.get('window').width
 
 export const ProfileScreen = observer(function ProfileScreen() {
   // Pull in one of our MST stores
-  const { authStore, subCategoryStore } = useStores()
+  const { authStore, subCategoryStore, parentCategoryStore } = useStores()
   const scrollY = useRef(new Animated.Value(0)).current
   let anystring = [];
 
@@ -71,7 +71,8 @@ export const ProfileScreen = observer(function ProfileScreen() {
     {
       inputRange: [0, HEIGHT_DIFF],
       outputRange: ["100%", "0%"],
-      extrapolate: "clamp"
+      extrapolate: "clamp",
+
     }
   )
 
@@ -86,56 +87,152 @@ export const ProfileScreen = observer(function ProfileScreen() {
   const [changeView2, setChangeView2] = useState<boolean>(true);
 
   const [show, setShow] = useState<any>("");
+  const [categoryList, setcategoryList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
+  const [idlist, setidList] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [activeSections, setActiveSections] = React.useState([]);
   const [list, setList] = useState<any>();
-  const [filterList, setFilterList] = useState<any>();
+
 
   useEffect(() => {
     if (isFocused) {
-      setList(subCategoryStore.visitedSubcategorydata);
-      console.tron.log(subCategoryStore.visitedSubcategorydata)
+      fetchData();
+      BackHandler.addEventListener("hardwareBackPress", backAction)
+    }
+    return function cleanUp() {
+      setSearchText('')
+      setcategoryList([])
+      setFilterList([])
+      setActiveSections([])
+      BackHandler.removeEventListener("hardwareBackPress", backAction)
     }
   }, [isFocused]);
-  const renderCloseButton = (text: string) => {
-    return (
-      <TouchableOpacity onPress={() => {
-        if (text == "PREPARE") {
-          setChangeView(false);
-          setText("PREPARE")
-        } else if (text == "LEARN") {
-          setChangeView1(false)
-          setText("LEARN")
-        } else {
-          setChangeView2(false)
-          setText("TRAIN")
-        }
-      }}
-        style={profileScreenStyles.CLOSEBUTTON}>
-        <Text style={profileScreenStyles.CLOSEBUTTONTEXT}>{text}</Text>
-        <Icon icon="upArrow" style={profileScreenStyles.BUTTONICON} />
-      </TouchableOpacity>
-    );
+
+
+  function backAction() {
+    navigation.navigate("dashboradScreen");
+    return true;
   }
-  const renderOpenButton = (text: string) => {
-    return (
-      <TouchableOpacity onPress={() => {
-        if (text == "PREPARE") {
-          setChangeView(true);
-          setText("")
-        } else if (text == "LEARN") {
-          setChangeView1(true)
-          setText("")
-        } else {
-          setChangeView2(true)
-          setText("")
+  // function fetchIds() {
+  //   let ids = []
+
+  //   subCategoryStore.visitedSubcategorydata.forEach(visitedElement => {
+  //     visitedElement.media.forEach(x => {
+  //       ids.push(x.id)
+  //     })
+  //   })
+  //   setidList(ids);
+  // }
+  function fetchData() {
+    let ids = []
+    subCategoryStore.visitedSubcategorydata.forEach(visitedElement => {
+      visitedElement.media.forEach(x => {
+        ids.push(x.id)
+      })
+    })
+    let tempArray = [];
+    parentCategoryStore.parentCategoryDetails.forEach(parentCategoryElement => {
+      subCategoryStore.subCategoryDetails.forEach(subCategoryElement => {
+        if (subCategoryElement.parentId == parentCategoryElement.id) {
+          let visitedMedia = [];
+          subCategoryElement.data.forEach(dataElement => {
+            //object for filter data
+            let tempObj = new Object;
+            // console.tron.log(dataElement.name)
+            tempObj['name'] = dataElement.name;
+            if (dataElement.type != 'None') {
+              //filter data media by ids
+              let temp = dataElement.media.filter((item) => {
+                return ids.indexOf(item.id) > -1;
+              })
+              if (temp.length != 0) {
+                tempObj['media'] = temp;
+                visitedMedia.push(tempObj);
+              }
+            }
+          });
+          if (visitedMedia.length > 0) {
+            tempArray.push({ title: parentCategoryElement.name, content: visitedMedia });
+          }
         }
-      }}
-        style={profileScreenStyles.OPENBUTTON}>
-        <Text style={profileScreenStyles.OPENBUTTONTEXT}>{text}</Text>
-        <Icon icon="downArrow" style={profileScreenStyles.BUTTONICON} />
-      </TouchableOpacity>
-    );
+      });
+    });
+    setcategoryList(tempArray);
+    console.tron.log(categoryList)
+    setFilterList(tempArray);
+
   }
+  function searchFilter(text) {
+    console.tron.log(text)
+    setSearchText(text);
+    if (text == "") {
+      setFilterList(categoryList)
+      setActiveSections([]);
+    }
+    else {
+      let filterArray = categoryList.filter((item) => item.title.toLowerCase().includes(text.toLowerCase()));
+      if (filterArray.length > 0) {
+        setFilterList(filterList);
+        setActiveSections([0]);
+      }
+      else {
+        let copiedArray = categoryList.slice();
+        let tempArray = copiedArray.map((element) => {
+          return {
+            ...element,
+            content: element.content.filter((subElement) =>
+              subElement.name.toLowerCase().includes(text.toLowerCase()))
+          }
+        });
+        let filteredArray = tempArray.filter((item) => item.content.length > 0)
+        setFilterList(filteredArray);
+        setActiveSections([0]);
+      }
+    }
+  }
+  // const renderCloseButton = (text: string) => {
+  //   return (
+  //     <TouchableOpacity onPress={() => {
+  //       if (text == "PREPARE") {
+  //         setChangeView(false);
+  //         setText("PREPARE")
+  //       } else if (text == "LEARN") {
+  //         setChangeView1(false)
+  //         setText("LEARN")
+  //       } else {
+  //         setChangeView2(false)
+  //         setText("TRAIN")
+  //       }
+  //     }}
+  //       style={profileScreenStyles.CLOSEBUTTON}>
+  //       <Text style={profileScreenStyles.CLOSEBUTTONTEXT}>{text}</Text>
+  //       <Icon icon="upArrow" style={profileScreenStyles.BUTTONICON} />
+  //     </TouchableOpacity>
+  //   );
+  // }
+  // const renderOpenButton = (text: string) => {
+  //   return (
+  //     <TouchableOpacity onPress={() => {
+  //       if (text == "PREPARE") {
+  //         setChangeView(true);
+  //         setText("")
+  //       } else if (text == "LEARN") {
+  //         setChangeView1(true)
+  //         setText("")
+  //       } else {
+  //         setChangeView2(true)
+  //         setText("")
+  //       }
+  //     }}
+  //       style={profileScreenStyles.OPENBUTTON}>
+  //       <Text style={profileScreenStyles.OPENBUTTONTEXT}>{text}</Text>
+  //       <Icon icon="downArrow" style={profileScreenStyles.BUTTONICON} />
+  //     </TouchableOpacity>
+  //   );
+  // }
   const ListItem = ({ item }) => {
+    // console.tron.log("item...", item)
     return (
       <View style={profileScreenStyles.LISTVIEW}>
         <View style={profileScreenStyles.LISTITEMVIEW}>
@@ -147,7 +244,10 @@ export const ProfileScreen = observer(function ProfileScreen() {
             resizeMode={item.type == 'Image' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover}
           />
           <TouchableOpacity onPress={() => {
-            subCategoryStore.deletevisitedsubcategory(item.category_id, item.id, text)
+            let stringtext = subCategoryStore.visitedSubcategorydata.find(x => x.categoryId == item.category_id)
+            subCategoryStore.deletevisitedsubcategory(item.category_id, item.id, stringtext.parentName)
+            setActiveSections([])
+            fetchData()
           }}
             style={profileScreenStyles.DELETEVIEW}>
             <Icon icon="delete" style={profileScreenStyles.DELETEICON} />
@@ -159,100 +259,85 @@ export const ProfileScreen = observer(function ProfileScreen() {
   const renderView = ({ item, index }) => {
     return (
       <>
-        <Text style={profileScreenStyles.DISPLAYTEXT}>{item.categoryName}</Text>
+        {/* <Text style={profileScreenStyles.DISPLAYTEXT}>{item.categoryName}</Text> */}
+        <Text style={profileScreenStyles.DISPLAYTEXT}>{item.name}</Text>
+
         <FlatList
           horizontal
           data={item.media}
           renderItem={({ item }) => <ListItem item={item} />}
           showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={profileScreenStyles.LISTSEPARATOR} />}
+          ItemSeparatorComponent={() => <View style={profileScreenStyles.LISTSEPARATOR}/>}
         />
       </>
     );
   }
-  const displayView = (index: number) => {
-    let visitedSubcategory = subCategoryStore.visitedSubcategorydata.filter(x => x.parentId == index)
-    visitedSubcategory.sort((a, b) => (a.categoryId > b.categoryId) ? 1 : -1)
-    if (visitedSubcategory.length != 0) {
-      return (
-        <View style={profileScreenStyles.DISPLAYVIEW}>
-          <FlatList
-            data={visitedSubcategory}
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={() => <View style={profileScreenStyles.LISTSEPARATOR} />}
-            renderItem={renderView}
-          />
-        </View>
-      );
-    } else {
-      Alert.alert("category empty.....")
-    }
-  }
-  const filterdata = (text: string) => {
-    if (text) {
-      const newData = list.filter(x => x.categoryName.toLowerCase().includes(text.toLowerCase()) || x.parentName.toLowerCase().includes(text.toLowerCase()))
-      console.tron.log("fileter...", newData)
-      setFilterList(newData)
-      setShow(text)
-    } else {
-      setShow(text)
-    }
-  }
-  const displaySearchList = ({ item }) => {
-    if (item.categoryName.toLowerCase().includes(show.toLowerCase())) {
-      return (<Text text={item.categoryName} style={profileScreenStyles.TEXTINPUT} />);
-    }
-    if (item.parentName.toLowerCase().includes(show.toLowerCase())) {
-      return (<Text text={item.parentName} style={profileScreenStyles.TEXTINPUT} />);
-    }
-  }
+  // const displayView = (index: number) => {
+  //   let visitedSubcategory = subCategoryStore.visitedSubcategorydata.filter(x => x.parentId == index)
+  //   visitedSubcategory.sort((a, b) => (a.categoryId > b.categoryId) ? 1 : -1)
+  //   if (visitedSubcategory.length != 0) {
+  //     return (
+  //       <View style={profileScreenStyles.DISPLAYVIEW}>
+  //         <FlatList
+  //           data={visitedSubcategory}
+  //           showsHorizontalScrollIndicator={false}
+  //           ItemSeparatorComponent={() => <View style={profileScreenStyles.LISTSEPARATOR} />}
+  //           renderItem={renderView}
+  //         />
+  //       </View>
+  //     );
+  //   } else {
+  //     Alert.alert("category empty.....")
+  //   }
+  // }
+  // const filterdata = (text: string) => {
+  //   if (text) {
+  //     const newData = list.filter(x => x.categoryName.toLowerCase().includes(text.toLowerCase()) || x.parentName.toLowerCase().includes(text.toLowerCase()))
+  //     console.tron.log("fileter...", newData)
+  //     setFilterList(newData)
+  //     setShow(text)
+  //   } else {
+  //     setShow(text)
+  //   }
+  // }
+  // const displaySearchList = ({ item }) => {
+  //   if (item.categoryName.toLowerCase().includes(show.toLowerCase())) {
+  //     return (<Text text={item.categoryName} style={profileScreenStyles.TEXTINPUT} />);
+  //   }
+  //   if (item.parentName.toLowerCase().includes(show.toLowerCase())) {
+  //     return (<Text text={item.parentName} style={profileScreenStyles.TEXTINPUT} />);
+  //   }
+  // }
 
-  const [activeSections, setActiveSections] = React.useState([]);
-  const [collapsed, setCollapsed] = useState(true);
-  const [multipleSelect, setMultipleSelect] = useState(false);
 
-  const toggleExpanded = () => {
-    // Toggling the state of single Collapsible
-    setCollapsed(!collapsed);
-  };
-  const setSections = (sections) => {
-    // Setting up a active section state
-    setActiveSections(
-      sections.includes(undefined) ? [] : sections
-    );
-  };
-  const renderHeader = (section, _, isActive) => {
+
+  const renderHeader = (section, index, isActive) => {
     // Accordion header view
+    // console.log("header....",section)
     return (
       <Animatable.View
         duration={400}
-        style={[
-          styles.header,
-          isActive ? styles.active : styles.inactive
-        ]}
+        style={isActive ? profileScreenStyles.OPENBUTTON : profileScreenStyles.CLOSEBUTTON
+        }
         transition="backgroundColor">
-        <Text style={styles.headerText}>
+        <Text style={isActive ? profileScreenStyles.OPENBUTTONTEXT : profileScreenStyles.CLOSEBUTTONTEXT}>
           {section.title}
         </Text>
+        <Icon icon={isActive ? "downArrow" : "upArrow"} style={profileScreenStyles.BUTTONICON} />
       </Animatable.View>
     );
   };
-  const renderContent = (section, _, isActive) => {
-    // Accordion Content view
+  const renderContent = (section, index, isActive) => {
+    // console.tron.log("content....",section)
     return (
-      <Animatable.View
-        duration={400}
-        style={[
-          styles.content,
-          isActive ? styles.active : styles.inactive
-        ]}
-        transition="backgroundColor">
-        <Animatable.Text
-          animation={isActive ? 'bounceIn' : undefined}
-          style={{ textAlign: 'center' }}>
-          {section.content}
-        </Animatable.Text>
-      </Animatable.View>
+      <View style={profileScreenStyles.DISPLAYVIEW}>
+        <FlatList
+          data={section.content}
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={profileScreenStyles.LISTSEPARATOR} />}
+          renderItem={renderView}
+        />
+      </View>
     );
   };
   return (
@@ -260,7 +345,7 @@ export const ProfileScreen = observer(function ProfileScreen() {
       <Wallpaper />
       <Header headerText="Profile" />
 
-      <Animated.View style={[profileScreenStyles.PROFILEVIEW, { maxHeight: headerHight, backgroundColor: "transparent" }]}>
+      <Animated.View style={[profileScreenStyles.PROFILEVIEW, { maxHeight: headerHight,backgroundColor:'rgba(52, 52, 52, 0.8)' }]}>
         <Animated.View style={[{
           top: imageTop, left: imageLeft, position: "absolute", bottom: 0,
         }]}>
@@ -280,25 +365,15 @@ export const ProfileScreen = observer(function ProfileScreen() {
           left: userDetailLeft,
           right: userDetailRight
         }}>
-          <Animated.Text style={[profileScreenStyles.PROFILENAME, { minWidth: minWidth }]}>
-          {authStore.userDetails.userName != "" ? authStore.userDetails.userName : "Person Name"}
+          <Animated.Text style={[profileScreenStyles.PROFILENAME, { minWidth }]}>
+            {authStore.userDetails.userName != "" ? authStore.userDetails.userName : "Person Name"}
           </Animated.Text>
-          <Animated.Text style={[profileScreenStyles.PROFILETEXT, { minWidth: minWidth }]}>
-          {authStore.userDetails.userEmail != ""? authStore.userDetails.userEmail :"Person Email"}
+          <Animated.Text style={[profileScreenStyles.PROFILETEXT, { minWidth }]}>
+            {authStore.userDetails.userEmail != "" ? authStore.userDetails.userEmail : "Person Email"}
           </Animated.Text>
-          <Animated.Text style={[profileScreenStyles.PROFILETEXT, { minWidth: minWidth }]}>
-          {authStore.userDetails.dateOfBirth != ""? authStore.userDetails.dateOfBirth :"person Birthdate"}
+          <Animated.Text style={[profileScreenStyles.PROFILETEXT, { minWidth }]}>
+            {authStore.userDetails.dateOfBirth != "" ? authStore.userDetails.dateOfBirth : "person Birthdate"}
           </Animated.Text>
-          {/* {authStore.userDetails.userName != ""
-            ? <Text style={profileScreenStyles.PROFILENAME}>{authStore.userDetails.userName}</Text>
-            : <Text style={profileScreenStyles.PROFILENAME}>text</Text>
-          } */}
-          {/* {authStore.userDetails.userEmail != ""
-            ? <Text style={profileScreenStyles.PROFILETEXT}>{authStore.userDetails.userEmail}</Text>
-            : <></>}
-          {authStore.userDetails.dateOfBirth != ""
-            ? <Text style={profileScreenStyles.PROFILETEXT}>17th, March, 1986</Text>
-            : <Text style={profileScreenStyles.PROFILETEXT}>17th, March, 1986</Text>} */}
         </Animated.View>
       </Animated.View>
       <View style={{ flexGrow: 1, marginTop: MAX_HEIGHT }}>
@@ -306,15 +381,15 @@ export const ProfileScreen = observer(function ProfileScreen() {
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
         )}
-          scrollEventThrottle={16}>
+          scrollEventThrottle={16}
+          style={{backgroundColor:"#0C090A",paddingBottom:20}}>
           <View style={profileScreenStyles.CATEGORYVIEW}>
             <Text style={profileScreenStyles.SAVEDTEXT}>Saved Category</Text>
 
-
             <View style={profileScreenStyles.SEARCHVIEW}>
               <TextInput
-                value={show}
-                onChangeText={(text) => filterdata(text)}
+                value={searchText}
+                onChangeText={(text) => searchFilter(text)}
                 placeholder="Search categories"
                 placeholderTextColor="white"
                 style={profileScreenStyles.TEXTINPUT} />
@@ -322,134 +397,68 @@ export const ProfileScreen = observer(function ProfileScreen() {
                 style={profileScreenStyles.SEARCHIMAGE} />
             </View>
 
-            {show ? <FlatList
+            {/* {show ? <FlatList
               style={profileScreenStyles.SEARCHLIST}
               data={filterList}
               renderItem={displaySearchList}
               ItemSeparatorComponent={() => <View style={profileScreenStyles.ITEMSEPERATOR} />}
-            /> : <></>}
+            /> : <></>} */}
 
-            {changeView ? renderCloseButton("PREPARE") : renderOpenButton("PREPARE")}
+            {/* {changeView ? renderCloseButton("PREPARE") : renderOpenButton("PREPARE")}
             {text == "PREPARE" ? displayView(1) : <></>}
 
             {changeView1 ? renderCloseButton("LEARN") : renderOpenButton("LEARN")}
             {text == "LEARN" ? displayView(2) : <></>}
 
             {changeView2 ? renderCloseButton("TRAIN") : renderOpenButton("TRAIN")}
-            {text == "TRAIN" ? displayView(3) : <></>}
+            {text == "TRAIN" ? displayView(3) : <></>} */}
 
+            <Accordion
+              activeSections={activeSections}
+              // For any default active section
+              sections={filterList}
+              // Title and content of accordion
+              touchableComponent={TouchableOpacity}
+              // Which type of touchable component you want
+              // It can be the following Touchables
+              // TouchableHighlight, TouchableNativeFeedback
+              // TouchableOpacity , TouchableWithoutFeedback
+              expandMultiple={true}
+              // If you want to expand multiple at a time
+              renderHeader={renderHeader}
+              // Header Component(View) to render
+              renderContent={renderContent}
+              // Content Component(View) to render
+              duration={400}
+              // Duration for Collapse and expand
+              onChange={(activeSections) => setActiveSections(activeSections)}
+            // Setting the state of active sections 
+            />
           </View>
-          {/* <Accordion
-        sections={CONTENT}
-        activeSections={activeSections}
-        renderSectionTitle={renderSectionTitle}
-        renderHeader={renderHeader}
-        renderContent={renderContent}
-        // onChange={updateSections}
-      /> */}
-          {/* <Accordion
-            activeSections={activeSections}
-            sections={CONTENT}
-            touchableComponent={TouchableOpacity}
-            expandMultiple={multipleSelect}
-            renderHeader={renderHeader}
-            renderContent={renderContent}
-            duration={400}
-            onChange={setSections}
-            renderAsFlatList={false}
-          /> */}
         </Animated.ScrollView>
       </View>
     </Screen >
   )
 })
 
-const CONTENT = [
-  {
-    title: 'Terms and Conditions',
-    content:
-      "The following terms and conditions, together with any referenced documents form a legal agreement between you and your employer, employees,agents, contractors and any other entity on whose behalf you accept these terms",
-  },
-  {
-    title: 'Privacy Policy',
-    content:
-      "A Privacy Policy agreement is the agreement where you specify if you collect personal data from your users,what kind of personal data you collect and what you do with that data.",
-  },
-  // {
-  //   title: 'Return Policy',
-  //   content:
-  //     'Our Return & Refund Policy template lets you get 
-  //      started with a Return and Refund Policy agreement. 
-  //      This template is free to download and use. According to
-  //      TrueShip study, over 60% of customers review a Return/Refund
-  //      Policy before they make a purchasing decision.',
-  // },
-];
+// const CONTENT = [
+//   {
+//     title: 'Terms and Conditions',
+//     content:
+//       "The following terms and conditions, together with any referenced documents form a legal agreement between you and your employer, employees,agents, contractors and any other entity on whose behalf you accept these terms",
+//   },
+//   {
+//     title: 'Privacy Policy',
+//     content:
+//       "A Privacy Policy agreement is the agreement where you specify if you collect personal data from your users,what kind of personal data you collect and what you do with that data.",
+//   },
+
+// ];
 
 //To make the selector (Something like tabs)
-const SELECTORS = [
-  { title: 'T&C', value: 0 },
-  { title: 'Privacy Policy', value: 1 },
-  { title: 'Return Policy', value: 2 },
-  { title: 'Reset all' },
-];
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'red',
-    paddingTop: 10,
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: '300',
-    marginBottom: 20,
-    color: "black"
-  },
-  header: {
-    backgroundColor: '#F5FCFF',
-    padding: 10,
-  },
-  headerText: {
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  content: {
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  active: {
-    backgroundColor: 'rgba(255,255,255,1)',
-  },
-  inactive: {
-    backgroundColor: 'rgba(245,252,255,1)',
-  },
-  selectors: {
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  selector: {
-    backgroundColor: '#F5FCFF',
-    padding: 10,
-  },
-  activeSelector: {
-    fontWeight: 'bold',
-  },
-  selectTitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    padding: 10,
-  },
-  multipleToggle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 30,
-    alignItems: 'center',
-  },
-  multipleToggle__title: {
-    fontSize: 16,
-    marginRight: 8,
-  },
-});
+// const SELECTORS = [
+//   { title: 'T&C', value: 0 },
+//   { title: 'Privacy Policy', value: 1 },
+//   { title: 'Return Policy', value: 2 },
+//   { title: 'Reset all', value: 3 },
+// ];

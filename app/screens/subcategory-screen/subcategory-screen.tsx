@@ -19,12 +19,13 @@ export const SubcategoryScreen = observer(function SubcategoryScreen() {
   const [FlatListData, setFlatListData] = useState<any>();
   useEffect(() => {
     if (isFocused) {
+      subCategoryStore.setCurrentSubCategoryId(parent_id)
       callApi()
     }
   }, [isFocused, route.params.ParamId])
-  const callApi = () => {
+  const callApi = async () => {
     setisLoading(true)
-    subCategoryStore.getSubCategoryData(parent_id)
+    await subCategoryStore.getSubCategoryData(parent_id)
     setisLoading(false)
     let subCategoryData = subCategoryStore.subCategoryDetails.find(x => x.parentId == parent_id)
     setFlatListData(subCategoryData.data)
@@ -54,7 +55,7 @@ export const SubcategoryScreen = observer(function SubcategoryScreen() {
       <Wallpaper />
       <Header headerText={titleName} rightIcon="rightIcon" leftIcon="leftIcon" />
       {isLoading ? <View style={subCategoryScreenStyles.ACTIVITYINDICATOR}>
-        <ActivityIndicator color="white" size={70} />
+        <ActivityIndicator color="#eece00" size={70} />
       </View> : <></>}
       <FlatList
         contentContainerStyle={subCategoryScreenStyles.FLATLIST}

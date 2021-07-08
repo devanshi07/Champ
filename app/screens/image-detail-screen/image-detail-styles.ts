@@ -1,5 +1,5 @@
 import { ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import { typography } from '../../theme';
+import { color, typography } from '../../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../../utils/scale';
 
 export const imageDetailScreenStyles = {
@@ -7,11 +7,11 @@ export const imageDetailScreenStyles = {
         flex: 1
     } as ViewStyle,
     PAGINATION: {
-        width: scale(13.3),
+        width: verticalScale(13.3),
         height: verticalScale(13.3),
         borderRadius: 360,
         backgroundColor: 'yellow',
-        marginBottom: verticalScale(30),
+        marginBottom: verticalScale(10),
     } as ViewStyle,
     SLIDEVIEW: {
         flex: 1,
@@ -35,7 +35,7 @@ export const imageDetailScreenStyles = {
     NEXTBUTTON: {
         width: scale(61.3),
         height: verticalScale(26.7),
-        backgroundColor: 'yellow',
+        backgroundColor: color.palette.yellow,
         justifyContent: 'center'
     } as ViewStyle,
     INNERBUTTONVIEW: {
@@ -74,14 +74,12 @@ export const imageDetailScreenStyles = {
         textAlign: 'center',
         fontWeight: 'bold',
         fontFamily: typography.bold,
-        marginBottom: verticalScale(16.3)
     } as TextStyle,
     SLIDERDES: {
         color: 'white',
         fontSize: moderateVerticalScale(17.3),
         textAlign: "center",
         fontFamily: typography.light,
-        bottom: verticalScale(30)
     } as TextStyle,
     FLATLIST: {
         marginVertical: verticalScale(7),
@@ -89,13 +87,14 @@ export const imageDetailScreenStyles = {
     } as ViewStyle,
     RENDERVIEW: {
         marginHorizontal: scale(33.3),
-        justifyContent: "center"
+        justifyContent: "center",
+        marginTop:verticalScale(5)
     } as ViewStyle,
     RENDERTITLE: {
         fontFamily: typography.bold,
         fontSize: moderateVerticalScale(17.3),
         textTransform: "uppercase",
-        marginBottom: verticalScale(16.3)
+        marginBottom: verticalScale(16.3),
     } as TextStyle,
     RENDERIMAGE: {
         alignSelf: "center",
@@ -132,5 +131,8 @@ export const imageDetailScreenStyles = {
         alignItems: "center",
         opacity: 0.5,
         backgroundColor: "black"
-    } as ViewStyle
+    } as ViewStyle,
+    ITEMSILDERSTYLE:{
+        marginHorizontal:35.3
+    }as ViewStyle
 }

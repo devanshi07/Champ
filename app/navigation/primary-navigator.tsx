@@ -65,12 +65,7 @@ function DrawerStack() {
       drawerType="slide"
       drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={{ swipeEnabled: false }}
-      drawerContentOptions={{
-        activeBackgroundColor: "#5cbbff",
-        activeTintColor: color.palette.yellow,
-        inactiveBackgroundColor: "black",
-        inactiveTintColor: "white",
-      }}
+      drawerStyle={{backgroundColor:"black"}}
       >
       <Drawers.Screen name="bottomstack" component={BottomTabStack} />
     </Drawers.Navigator>

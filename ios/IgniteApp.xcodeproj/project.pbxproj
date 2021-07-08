@@ -16,6 +16,10 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* IgniteAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* IgniteAppTests.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		48FE48C72B6146DAA84B30A9 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF8696B48B1B4486A5D033B2 /* SFProText-Bold.ttf */; };
+		67607B0AFD03431690338851 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3608A9FBC9248F2BADEC40B /* SFProText-Light.ttf */; };
+		38A95E53224A4EB6859DEAEE /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75C589011FD845F484C16D45 /* SFProText-Regular.ttf */; };
+		8B81BD33B9794EA198B65870 /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3D0B5E9C352447EA060F56D /* SFProText-Semibold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = IgniteApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FF8696B48B1B4486A5D033B2 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; name = "SFProText-Bold.ttf"; path = "../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A3608A9FBC9248F2BADEC40B /* SFProText-Light.ttf */ = {isa = PBXFileReference; name = "SFProText-Light.ttf"; path = "../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		75C589011FD845F484C16D45 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; name = "SFProText-Regular.ttf"; path = "../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A3D0B5E9C352447EA060F56D /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; name = "SFProText-Semibold.ttf"; path = "../assets/fonts/SFProText-Semibold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +169,10 @@
 		4247588C4F524AE6AF7A7B9D /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
+				FF8696B48B1B4486A5D033B2 /* SFProText-Bold.ttf */,
+				A3608A9FBC9248F2BADEC40B /* SFProText-Light.ttf */,
+				75C589011FD845F484C16D45 /* SFProText-Regular.ttf */,
+				A3D0B5E9C352447EA060F56D /* SFProText-Semibold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -304,6 +316,10 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				48FE48C72B6146DAA84B30A9 /* SFProText-Bold.ttf in Resources */,
+				67607B0AFD03431690338851 /* SFProText-Light.ttf in Resources */,
+				38A95E53224A4EB6859DEAEE /* SFProText-Regular.ttf in Resources */,
+				8B81BD33B9794EA198B65870 /* SFProText-Semibold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

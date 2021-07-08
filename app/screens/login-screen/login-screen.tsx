@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { View, TextInput, TouchableOpacity, StatusBar, Alert } from "react-native"
 import { Icon, Screen, Text, Wallpaper } from "../../components"
@@ -27,6 +27,15 @@ export const LoginScreen = observer(function LoginScreen() {
   const [password, setPassword] = React.useState<string>("");
   const [emailError, setEmailError] = React.useState<boolean>(false);
   const [passwordError, setPasswordError] = React.useState<boolean>(false);
+  const [onlyNumbers, setonlyNumbers] = React.useState<boolean>(false);
+  const [onlyAlpha, setOnlyAlpha] = React.useState<boolean>(false);
+  const [onlyLength, setOnlyLength] = React.useState<boolean>(false);
+  const [onlySpecial, setOnlySpecial] = React.useState<boolean>(false);
+
+  const lastname = useRef<any>();
+  const [lastNameRef,setLastNameRef] = React.useState<boolean>(false);
+  var pass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.([a-zA-Z]{2,5}|[a-zA-z]{2,5}\.[a-zA-Z]{2,5})$/;
 
   //for google sign in
   const signIn = async () => {
@@ -55,14 +64,11 @@ export const LoginScreen = observer(function LoginScreen() {
   };
   //function for email and password validation
   function checkValidation() {
-    var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    var pass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
-    if (email == "" || password == "") {
-      setEmailError(true);  //set email error
-      setPasswordError(true); //set password error
-    }
-    else if (!re.test(email)) {
+    // if (email === "" || password === "") {
+    //   setEmailError(true);  //set email error
+    //   setPasswordError(true); //set password error
+    // }
+    if (!re.test(email)) {
       setEmailError(true);
     }
     else if (!pass.test(password)) {
@@ -82,7 +88,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
   //check email while entering the value
   function checkEmail(text: string) {
-    if (text == "") {
+    if (text == "" || !re.test(text)) {
       setEmailError(true)
     }
     else {
@@ -92,7 +98,31 @@ export const LoginScreen = observer(function LoginScreen() {
   }
   //check password while entering the value
   function checkPassword(text: string) {
-    if (text == "") {
+    if (/\d/.test(text)) {
+      setPasswordError(true);
+      setonlyNumbers(true);
+    } else {
+      setonlyNumbers(false);
+    }
+    if (/[a-z]/.test(text) || /[A-Z]/.test(text)) {
+      setPasswordError(true);
+      setOnlyAlpha(true);
+    } else {
+      setOnlyAlpha(false);
+    }
+    if (/(_|[^\w\d ])/.test(text)) {
+      setPasswordError(true);
+      setOnlySpecial(true);
+    } else {
+      setOnlySpecial(false);
+    }
+    if (text.length >= 8) {
+      setPasswordError(true);
+      setOnlyLength(true);
+    } else {
+      setOnlyLength(false);
+    }
+    if (text == "" || !pass.test(text)) {
       setPasswordError(true)
     }
     else {
@@ -172,7 +202,13 @@ export const LoginScreen = observer(function LoginScreen() {
           <Text style={loginScreenStyles.SIGNINWELCOMETEXT} tx="loginScreen.signintext"></Text>
           <View style={loginScreenStyles.EMAILVIEW}>
             <Text tx="loginScreen.emailAddress" style={loginScreenStyles.TEXTSTYLE} />
-            <TextInput placeholder="Enter Email"
+            <TextInput
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                lastname.current.focus();
+              }}
+              blurOnSubmit={false}
+              placeholder="Enter Email"
               onChangeText={text => checkEmail(text)}
               placeholderTextColor={color.palette.white}
               style={loginScreenStyles.TEXTINPUTSTYLE} />
@@ -183,17 +219,20 @@ export const LoginScreen = observer(function LoginScreen() {
           <View style={loginScreenStyles.PASSWORDVIEW}>
             <Text tx="loginScreen.password" style={loginScreenStyles.TEXTSTYLE} />
             <TextInput placeholder="Enter Password"
+              returnKeyType="go"
+           ref={lastname}
+              onSubmitEditing={() => checkValidation()}
               onChangeText={text => checkPassword(text)}
               secureTextEntry={true}
               placeholderTextColor={color.palette.white}
               style={loginScreenStyles.TEXTINPUTSTYLE} />
             {passwordError ? <View style={loginScreenStyles.ERRORMSGVIEW}>
-              {renderError("loginScreen.passwordErrorLength")}
-              {renderError("loginScreen.passwordErrorAlpha")}
-              {renderError("loginScreen.passwordErrorSpecialChar")}
+              {!onlyLength ? renderError("loginScreen.passwordErrorLength") : <></>}
+              {!onlyAlpha || !onlyNumbers ? renderError("loginScreen.passwordErrorAlpha") : <></>}
+              {!onlySpecial ? renderError("loginScreen.passwordErrorSpecialChar") : <></>}
             </View> : <></>}
           </View>
-          <TouchableOpacity onPress={() => checkValidation()}
+          <TouchableOpacity onPress={checkValidation}
             style={loginScreenStyles.SIGNINBTN}>
             <Text tx="loginScreen.signIn" style={loginScreenStyles.SIGNINTEXT} />
           </TouchableOpacity>

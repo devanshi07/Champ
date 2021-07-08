@@ -16,7 +16,7 @@ export const profileScreenStyles = {
         width: 116.7,
         height: 116.7,
         borderRadius: 360,
-        borderColor: 'yellow',
+        borderColor: "#eece00",
         borderWidth: 2,
         // marginTop: 33.3,
         justifyContent: "center",
@@ -26,7 +26,7 @@ export const profileScreenStyles = {
         width: 116.7,
         height: 116.7,
         borderRadius: 360,
-        borderColor: 'yellow',
+        borderColor: "#eece00",
         borderWidth: 2,
         marginTop: 33.3,
         justifyContent: "center"
@@ -35,13 +35,13 @@ export const profileScreenStyles = {
         alignSelf: "center", fontFamily: typography.light, letterSpacing: 0.43, fontSize: 17.3, color: "#ffffff"
     } as TextStyle,
     PROFILENAME: {
-        fontFamily: typography.semiBold, letterSpacing: 0.6, fontSize: 24, color: "#ffffff",  textAlign: "center"
+        fontFamily: typography.semiBold, letterSpacing: 0.6, fontSize: 24, color: "#ffffff",  textAlign: "center",alignSelf: "flex-start",paddingLeft:10
     } as TextStyle,
     PROFILETEXT: {
-        fontFamily: typography.light, letterSpacing: 0.43, fontSize: 17.3, color: "#ffffff", textAlign: "center"
+        fontFamily: typography.light, letterSpacing: 0.43, fontSize: 17.3, color: "#ffffff", textAlign: "center",alignSelf:"flex-start",paddingLeft:10
     } as TextStyle,
     CATEGORYVIEW: {
-        justifyContent: "center", alignItems: "center", marginHorizontal: 33.3, marginBottom: 49.3,
+        justifyContent: "center", alignItems: "center", marginHorizontal: 33.3, marginBottom: 49.3
     } as ViewStyle,
     SAVEDTEXT: {
         fontFamily: typography.regular, fontSize: 20, color: "#eece00", alignSelf: "flex-start", marginTop: 27
@@ -72,16 +72,16 @@ export const profileScreenStyles = {
         margin: 5
     } as ViewStyle,
     CLOSEBUTTON: {
-        flex: 1, flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "center", marginTop: 16.7, alignItems: "center", borderColor: "white"
+         flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "space-between", marginTop: 16.7, alignItems: "center", borderColor: "white",width:"75%",alignSelf:"center"
     } as ViewStyle,
     OPENBUTTON: {
-        flex: 1, flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "center", marginTop: 16.7, alignItems: "center", backgroundColor: "#eece00"
+         flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "space-between", marginTop: 16.7, alignItems: "center", backgroundColor: "#eece00",width:"75%",alignSelf:"center"
     } as ViewStyle,
     CLOSEBUTTONTEXT: {
-        fontFamily: typography.regular, fontSize: 17.3, color: "#ffffff", flex: 1, marginLeft: 17.3
+        fontFamily: typography.regular, fontSize: 17.3, color: "#ffffff", flex: 1, marginLeft: 17.3,textTransform:"uppercase"
     } as TextStyle,
     OPENBUTTONTEXT: {
-        fontFamily: typography.regular, fontSize: 17.3, color: "#000000", flex: 1, marginLeft: 17.3
+        fontFamily: typography.regular, fontSize: 17.3, color: "#000000", flex: 1, marginLeft: 17.3,textTransform:"uppercase"
     } as TextStyle,
     BUTTONICON: {
         height: 9, marginRight: 14
@@ -130,7 +130,7 @@ export const profileScreenStyles = {
         height: 9.3
     } as ImageStyle,
     DISPLAYVIEW: {
-        marginBottom: 31.7, marginTop: 17.3, width: "100%"
+        marginBottom: 31.7, marginTop: 17.3, width: "75%",alignSelf:"center"
     } as ViewStyle,
     DISPLAYTEXT: {
         fontWeight: '800',

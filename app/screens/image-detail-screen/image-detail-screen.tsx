@@ -11,8 +11,9 @@ import HTML from "react-native-render-html"
 import FastImage from "react-native-fast-image"
 import { verticalScale } from '../../utils/scale';
 import YoutubePlayer from "react-native-youtube-iframe";
+import { typography } from "../../theme"
 
-const SLIDER_WIDTH = Dimensions.get('window').width + 80
+const SLIDER_WIDTH = Dimensions.get('window').width + 150
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
 export const ImageDetailScreen = observer(function ImageDetailScreen() {
@@ -33,7 +34,7 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
   let parenCategory = parentCategoryStore.parentCategoryDetails.find(x => x.id == parentId)
   subCategoryStore.visitedSubcategory(parentId, parenCategory.name, subcategory.id, subcategory.name, subcategory.media)
 
-  const nextButton = () => {
+  const nextButton = async () => {
     currentId = currentId + 1;
     categoryIndex = categoryIndex + 1;
     if (categoryIndex < findParentCategory.data.length) {
@@ -51,7 +52,7 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
       else {
         if (parentId + 1 <= parentCategoryStore.parentCategoryDetails.length) {
           setisLoading(true)
-          subCategoryStore.getSubCategoryData(parentId + 1)
+          await subCategoryStore.getSubCategoryData(parentId + 1)
           setisLoading(false)
         }
         let parentIndex = subCategoryStore.subCategoryDetails.findIndex(x => x.parentId == parentId + 1)
@@ -91,11 +92,26 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
     var videoUrl = item.url.replace("https://youtu.be/", "");
     return (
       <View style={imageDetailScreenStyles.RENDERVIEW}>
-        <Text style={imageDetailScreenStyles.RENDERTITLE}>{item.caption}</Text>
+        {item.caption != null ? <Text style={imageDetailScreenStyles.RENDERTITLE}>{item.caption}</Text> : <></>}
         <TouchableOpacity>
-          <YoutubePlayer height={verticalScale(250)} videoId={videoUrl} webViewStyle={imageDetailScreenStyles.RENDERIMAGE} />
+          <YoutubePlayer height={verticalScale(225)} videoId={videoUrl} webViewStyle={imageDetailScreenStyles.RENDERIMAGE} />
         </TouchableOpacity>
-        <HTML source={{ html: item.description }} baseFontStyle={imageDetailScreenStyles.RENDERDES} />
+        <HTML
+          // source={{ html: item.description }} 
+          baseFontStyle={imageDetailScreenStyles.RENDERDES}
+          tagsStyles={{
+            ul: { color: 'white', fontSize: 16, fontFamily: typography.semiBold },
+            h2: { color: 'white', fontFamily: typography.semiBold },
+            p: { color: 'white', fontSize: 16, fontFamily: typography.light },
+          }}
+          listsPrefixesRenderers={{
+            ul: () => {
+              return (
+                <Text style={{ color: "white", fontSize: 16, marginRight: 5 }}>•</Text>
+              );
+            }
+          }}
+          html={'<div style="color:white">' + item.description + '</div>'} />
       </View>
     );
   }
@@ -107,7 +123,7 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
       subCategoryStore.updateMediaList(parentId, parenCategory.name, subcategory.id, subcategory.name, item)
     }
     return (
-      <View key={index}>
+      <View style={imageDetailScreenStyles.ITEMSILDERSTYLE} key={index}>
         <FastImage style={imageDetailScreenStyles.SLIDERIMAGE}
           source={{
             uri: item.url,
@@ -126,7 +142,7 @@ export const ImageDetailScreen = observer(function ImageDetailScreen() {
       <Wallpaper />
       <Header headerText={route.params.ParamName} rightIcon="rightIcon" leftIcon="leftIcon" />
       {isLoading ? <View style={imageDetailScreenStyles.ACTIVITYINDICATOR}>
-        <ActivityIndicator color="white" size={70} />
+        <ActivityIndicator color="#eece00" size={70} />
       </View> : <></>}
       <View style={imageDetailScreenStyles.MAINVIEW}>
         <View style={imageDetailScreenStyles.TOPBUTTONVIEW}>

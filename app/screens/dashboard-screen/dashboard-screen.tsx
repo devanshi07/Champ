@@ -2,7 +2,7 @@ import React from "react"
 import { observer } from "mobx-react-lite"
 import { TouchableOpacity, FlatList, View, ActivityIndicator } from "react-native"
 import { Screen, Text, Wallpaper, Header } from "../../components"
-import {  useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { useStores } from "../../models"
 import { dashboardScreenStyles } from "./dashboard-styles"
 import { useEffect } from "react"
@@ -10,20 +10,25 @@ import { useState } from "react"
 
 export const DashboardScreen = observer(function DashboardScreen() {
   // Pull in one of our MST stores
-  const { parentCategoryStore } = useStores()
+  const { parentCategoryStore, subCategoryStore } = useStores()
   // OR
   // const rootStore = useStores()
 
   // Pull in navigation via hook
   const navigation = useNavigation()
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const isFocused = useIsFocused()
 
   useEffect(() => {
-    callApi()
-  }, [])
-  const callApi = () => {
+    if (isFocused) {
+      subCategoryStore.setCurrentSubCategoryId(0)
+      callApi()
+    }
+  }, [isFocused])
+
+  const callApi = async () => {
     setisLoading(true)
-    parentCategoryStore.getParentCategoryData(0)
+    await parentCategoryStore.getParentCategoryData(0)
     setisLoading(false)
   }
   const renderView = ({ item, index }) => {
@@ -41,12 +46,12 @@ export const DashboardScreen = observer(function DashboardScreen() {
       <Wallpaper />
       <Header headerText="Dashboard" rightIcon="rightIcon" />
       {isLoading ? <View style={dashboardScreenStyles.ACTIVITYINDICATOR}>
-        <ActivityIndicator color="white" size={70} />
+        <ActivityIndicator color="#eece00" size={70} />
       </View> : <></>}
       <FlatList
         contentContainerStyle={dashboardScreenStyles.FLATLIST}
         data={parentCategoryStore.parentCategoryDetails}
-        keyExtractor={(item,index) => index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={renderView}
       />
     </Screen>

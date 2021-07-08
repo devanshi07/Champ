@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="BOXING"
+            android:text="CHAMP"
             android:textColor="#FFFFFF"
             android:textSize="56dp"
             android:textStyle="bold"

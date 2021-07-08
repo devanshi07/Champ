@@ -9,12 +9,18 @@ export const SubCategoryStoreModel = types
   .model("SubCategoryStore")
   .props({
     isLoading: types.optional(types.boolean, false),
+    currentSubcategoryId: types.optional(types.number, 0),
     subCategoryDetails: types.optional(types.array(types.frozen()), []),
     visitedSubcategorydata: types.optional(types.array(types.frozen()), []),
+    visitedCategoryId : types.optional(types.array(types.frozen()),[]),
   })
   .extend(withEnvironment)
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
+    setCurrentSubCategoryId(id) {
+      self.currentSubcategoryId = id
+      console.tron.log("current...",self.currentSubcategoryId)
+    },
     getSubCategoryData: flow(function* getSubCategoryData(parentId: number) {
       try {
         self.isLoading = true;

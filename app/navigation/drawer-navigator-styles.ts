@@ -3,12 +3,9 @@ import { color, typography } from '../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../utils/scale';
 
 export const drawerNavigatorStyles = {
-    DRAWERSTYLE: {
-        backgroundColor: "black",
-        flex: 1
-    } as ViewStyle,
     ROOT: {
         flex: 1,
+        backgroundColor: "black",
         marginHorizontal: scale(33.3),
     } as ViewStyle,
     UPPERPART: {
@@ -33,7 +30,8 @@ export const drawerNavigatorStyles = {
         fontSize: moderateVerticalScale(23.8),
         marginTop: verticalScale(5.3),
         fontWeight: "bold",
-        color: color.palette.textColor
+        color: color.palette.textColor,
+        textTransform: "uppercase"
     } as TextStyle,
     CAPTION: {
         fontSize: moderateVerticalScale(5),
@@ -46,7 +44,19 @@ export const drawerNavigatorStyles = {
         color: color.palette.textColor,
         fontSize: moderateVerticalScale(20),
         fontFamily: typography.regular,
-        lineHeight: verticalScale(50),
-        textTransform: "uppercase"
+        lineHeight: verticalScale(25),
+        textTransform: "uppercase",
+        left: -6,
     } as TextStyle,
+    ACTIVELABELSTYLE: {
+        color: color.palette.yellow,
+        fontSize: moderateVerticalScale(20),
+        fontFamily: typography.regular,
+        lineHeight: verticalScale(25),
+        textTransform: "uppercase",
+        left: -6,
+    } as TextStyle,
+    DRAWERITEMSTYLE: {
+        left: -10
+    } as ViewStyle
 }
