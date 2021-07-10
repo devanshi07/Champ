@@ -13,38 +13,60 @@ export const profileScreenStyles = {
         width: "100%",
     } as ViewStyle,
     PROFILEIMAGE: {
-        width: 116.7,
-        height: 116.7,
+        width: scale(116.7),
+        height: scale(116.7),
         borderRadius: 360,
         borderColor: "#eece00",
         borderWidth: 2,
-        // marginTop: 33.3,
         justifyContent: "center",
         alignSelf: "center"
     } as ImageStyle,
     PLACEHOLDERVIEW: {
-        width: 116.7,
-        height: 116.7,
+        width: scale(116.7),
+        height: scale(116.7),
         borderRadius: 360,
         borderColor: "#eece00",
         borderWidth: 2,
-        marginTop: 33.3,
+        marginTop: verticalScale(33.3),
         justifyContent: "center"
     } as ViewStyle,
     PLACEHOLDERTEXT: {
-        alignSelf: "center", fontFamily: typography.light, letterSpacing: 0.43, fontSize: 17.3, color: "#ffffff"
+        alignSelf: "center",
+        fontFamily: typography.light,
+        letterSpacing: scale(0.43),
+        fontSize: moderateVerticalScale(17.3),
+        color: "#ffffff"
     } as TextStyle,
     PROFILENAME: {
-        fontFamily: typography.semiBold, letterSpacing: 0.6, fontSize: 24, color: "#ffffff",  textAlign: "center",alignSelf: "flex-start",paddingLeft:10
+        fontFamily: typography.semiBold,
+        letterSpacing: scale(0.6),
+        fontSize: moderateVerticalScale(24),
+        color: "#ffffff",
+        textAlign: "center",
+        alignSelf: "flex-start",
+        paddingLeft: scale(10)
     } as TextStyle,
     PROFILETEXT: {
-        fontFamily: typography.light, letterSpacing: 0.43, fontSize: 17.3, color: "#ffffff", textAlign: "center",alignSelf:"flex-start",paddingLeft:10
+        fontFamily: typography.light,
+        letterSpacing: scale(0.43),
+        fontSize: moderateVerticalScale(17.3),
+        color: "#ffffff",
+        textAlign: "center",
+        alignSelf: "flex-start",
+        paddingLeft: scale(10)
     } as TextStyle,
     CATEGORYVIEW: {
-        justifyContent: "center", alignItems: "center", marginHorizontal: 33.3, marginBottom: 49.3
+        justifyContent: "center",
+        alignItems: "center",
+        marginHorizontal: scale(33.3),
+        marginBottom: verticalScale(49.3)
     } as ViewStyle,
     SAVEDTEXT: {
-        fontFamily: typography.regular, fontSize: 20, color: "#eece00", alignSelf: "flex-start", marginTop: 27
+        fontFamily: typography.regular,
+        fontSize: moderateVerticalScale(20),
+        color: "#eece00",
+        alignSelf: "flex-start",
+        marginTop: verticalScale(27)
     } as TextStyle,
     SEARCHVIEW: {
         flex: 1,
@@ -56,43 +78,67 @@ export const profileScreenStyles = {
         width: "100%",
     } as ViewStyle,
     TEXTINPUT: {
-        fontSize: 16,
+        fontSize: moderateVerticalScale(16),
         color: "white",
         fontFamily: typography.light,
         flex: 1
     } as TextStyle,
     SEARCHIMAGE: {
-        height: 20,
-        width: 20
+        height: verticalScale(20),
+        width: verticalScale(20)
     } as ImageStyle,
-    SEARCHLIST: {
-        backgroundColor: "black", width: "100%", borderColor: "white", borderWidth: 1, paddingLeft: 5
-    } as ViewStyle,
     ITEMSEPERATOR: {
         margin: 5
     } as ViewStyle,
     CLOSEBUTTON: {
-         flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "space-between", marginTop: 16.7, alignItems: "center", borderColor: "white",width:"75%",alignSelf:"center"
+        flexDirection: "row",
+        height: verticalScale(43.3),
+        borderWidth: 1,
+        justifyContent: "space-between",
+        marginTop: verticalScale(16.7),
+        alignItems: "center",
+        borderColor: "white",
+        width: "75%",
+        alignSelf: "center"
     } as ViewStyle,
     OPENBUTTON: {
-         flexDirection: "row", height: 43.3, borderWidth: 1, justifyContent: "space-between", marginTop: 16.7, alignItems: "center", backgroundColor: "#eece00",width:"75%",alignSelf:"center"
+        flexDirection: "row",
+        height: verticalScale(43.3),
+        borderWidth: 1,
+        justifyContent: "space-between",
+        marginTop: verticalScale(16.7),
+        alignItems: "center",
+        backgroundColor: "#eece00",
+        width: "75%",
+        alignSelf: "center"
     } as ViewStyle,
     CLOSEBUTTONTEXT: {
-        fontFamily: typography.regular, fontSize: 17.3, color: "#ffffff", flex: 1, marginLeft: 17.3,textTransform:"uppercase"
+        fontFamily: typography.regular,
+        fontSize: moderateVerticalScale(17.3),
+        color: "#ffffff",
+        flex: 1,
+        marginLeft: scale(17.3),
+        textTransform: "uppercase"
     } as TextStyle,
     OPENBUTTONTEXT: {
-        fontFamily: typography.regular, fontSize: 17.3, color: "#000000", flex: 1, marginLeft: 17.3,textTransform:"uppercase"
+        fontFamily: typography.regular,
+        fontSize: moderateVerticalScale(17.3),
+        color: "#000000",
+        flex: 1,
+        marginLeft: scale(17.3),
+        textTransform: "uppercase"
     } as TextStyle,
     BUTTONICON: {
-        height: 9, marginRight: 14
+        height: verticalScale(9),
+        marginRight: scale(14)
     } as ImageStyle,
     LISTVIEW: {
-        marginRight: 4
+        marginRight: scale(4)
     } as ViewStyle,
     LISTITEMVIEW: {
         flex: 1,
-        width: 64.3,
-        height: 64.7,
+        width: verticalScale(64.3),
+        height: verticalScale(64.7),
         borderRadius: 360,
         borderColor: 'yellow',
         borderWidth: 2,
@@ -101,22 +147,25 @@ export const profileScreenStyles = {
     LISTIMAGE: {
         alignSelf: 'center',
         width: "100%",
-        height: 50.7,
-        marginBottom: 6.7,
+        height: verticalScale(50.7),
+        marginBottom: verticalScale(6.7),
         borderRadius: 360,
-        marginTop: 6,
+        marginTop: verticalScale(6),
     } as ImageStyle,
     LISTVIDEOIMAGE: {
         alignSelf: 'center',
         width: "100%",
         height: "100%",
-        marginBottom: 6.7,
+        marginBottom: verticalScale(6.7),
         borderRadius: 360,
         marginTop: 0,
     } as ImageStyle,
     DELETEVIEW: {
-        height: 17, width: 16.7, backgroundColor: "red", position: "absolute",
-        left: 45,
+        height: verticalScale(17),
+        width: verticalScale(16.7),
+        backgroundColor: "red",
+        position: "absolute",
+        left: 40,
         right: 0,
         top: 0,
         bottom: 0,
@@ -126,17 +175,20 @@ export const profileScreenStyles = {
     DELETEICON: {
         alignSelf: "center",
         backgroundColor: "red",
-        width: 8.7,
-        height: 9.3
+        width: verticalScale(8.7),
+        height: verticalScale(9.3)
     } as ImageStyle,
     DISPLAYVIEW: {
-        marginBottom: 31.7, marginTop: 17.3, width: "75%",alignSelf:"center"
+        marginBottom: verticalScale(31.7),
+        marginTop: verticalScale(17.3),
+        width: "75%",
+        alignSelf: "center"
     } as ViewStyle,
     DISPLAYTEXT: {
         fontWeight: '800',
-        fontSize: 18,
+        fontSize: moderateVerticalScale(18),
         color: '#f4f4f4',
-        marginBottom: 16.3,
+        marginBottom: verticalScale(16.3),
     } as TextStyle,
     LISTSEPARATOR: {
         margin: 12.7

@@ -1,5 +1,5 @@
 import { ImageStyle, ViewStyle, TextStyle } from 'react-native';
-import { color,typography } from '../../theme';
+import { color, typography } from '../../theme';
 import { moderateVerticalScale, scale, verticalScale } from '../../utils/scale';
 
 export const loginScreenStyles = {
@@ -8,14 +8,14 @@ export const loginScreenStyles = {
         flex: 1,
     } as ViewStyle,
     MAINCONTAINER: {
-        flex:1,
+        flex: 1,
         marginHorizontal: scale(33.3),
-    }as ViewStyle,
+    } as ViewStyle,
     BOTTOMVIEW: {
-        height:verticalScale(116.6),
-        marginBottom:verticalScale(36.7),
-        justifyContent:"flex-end"
-    }as ViewStyle,
+        height: verticalScale(116.6),
+        marginBottom: verticalScale(36.7),
+        justifyContent: "flex-end"
+    } as ViewStyle,
     ERRORMSGVIEW: {
         marginTop: verticalScale(9.7),
     } as ViewStyle,
@@ -50,7 +50,7 @@ export const loginScreenStyles = {
     } as ImageStyle,
     //style for all text
     WELCOMETEXT: {
-        fontSize: moderateVerticalScale(30), 
+        fontSize: moderateVerticalScale(30),
         marginTop: verticalScale(18.7),
         fontFamily: typography.semiBold
     } as TextStyle,
@@ -68,8 +68,8 @@ export const loginScreenStyles = {
         borderBottomWidth: 0.7,
         fontSize: moderateVerticalScale(16),
         color: color.palette.white,
-        fontFamily:typography.light,
-        paddingLeft:0
+        fontFamily: typography.light,
+        paddingLeft: 0
     } as TextStyle,
     BTNTEXTSTYLE: {
         fontSize: moderateVerticalScale(15.3),
@@ -82,13 +82,13 @@ export const loginScreenStyles = {
         alignSelf: "center",
         letterSpacing: scale(3.07),
         color: color.palette.black,
-        fontFamily:typography.regular
+        fontFamily: typography.regular
     } as TextStyle,
     ERRORMSGTEXT: {
         fontSize: moderateVerticalScale(12),
         color: "#c53838",
         fontFamily: typography.regular,
-        lineHeight:verticalScale(18.7)
+        lineHeight: verticalScale(18.7)
     } as TextStyle,
 
 }

@@ -11,7 +11,6 @@ export const ParentCategoryStoreModel = types
     isLoading: types.optional(types.boolean, false),
     parentCategoryDetails: types.optional(types.frozen(), []),
     maxParentId: types.optional(types.number,3),
-    minParentId: types.optional(types.number,1),
   })
   .extend(withEnvironment)
   .views(self => ({
@@ -26,19 +25,15 @@ export const ParentCategoryStoreModel = types
         const res = yield self.environment.api.getParentCategory(parentId);
         if (res.kind === "ok" && res.status == 200) {
           self.isLoading = false;
-
           self.parentCategoryDetails = res.parentCategory.data
           return { response: true, message: "Success." };
         }
         else {
           self.isLoading = false;
-
           return { response: false, message: "Something went wrong." };
         }
       } catch (error) {
         self.isLoading = false;
-
-        console.log("parent error ", error)
         return { response: false, message: "Something went wrong." };
       }
     }),
